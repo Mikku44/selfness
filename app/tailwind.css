@@ -2,34 +2,204 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  --primary-color: rgb(255 178 44);
+  --secondary-color: #5a67d8;
+}
+
 html {
-  font-size: 16px; /* base size */
+  font-size: 16px;
+  /* base size */
 }
 
 body {
-  font-family: sans-serif;
+  font-family: "Playpen Sans Thai", "Anuphan", sans-serif;
   line-height: 1.6;
+
 }
 
 h1 {
-  font-size: 2rem; /* 32px */
+  font-size: 2rem;
+  /* 32px */
 }
 
 h2 {
-  font-size: 1.75rem; /* 28px */
+  font-size: 1.75rem;
+  /* 28px */
 }
 
 h3 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
 }
 
 p {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
+  /* 16px */
 }
 
 small {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
+  /* 14px */
 }
+
+
+.max-container {
+  @apply max-w-6xl mx-auto md:px-0 px-2;
+}
+
+.btn-primary {
+  /* @apply bg-zinc-900 shadow-sm text-white rounded-md items-center px-2 py-1 duration-150 hover:opacity-90; */
+  --button_color: var(--primary-color);
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.btn-disabled {
+
+  --button_color: white;
+  --button_outline_color: gray;
+  cursor: not-allowed;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.btn-question {
+
+  --button_color: white;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.btn-question-active {
+
+  --button_color: white;
+  --button_outline_color: #5a67d8;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+button {
+  /* Variables */
+  --button_radius: 0.75em;
+  --button_outline_color: #000000;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
+
+
+
+button:hover .btn-primary,
+button:hover .btn-question {
+  /* Pull the button upwards when hovered */
+  transform: translateY(-0.33em);
+}
+
+button:active .btn-primary,
+button:active .btn-question {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
+}
+
+.box{
+  transition-duration: 300ms;
+  
+}
+
+.box:hover {
+ box-shadow:
+  rgba(255, 215, 0, 0.4) 5px 5px,
+  rgba(255, 215, 0, 0.3) 10px 10px,
+  rgba(255, 215, 0, 0.2) 15px 15px,
+  rgba(255, 215, 0, 0.1) 20px 20px,
+  rgba(255, 215, 0, 0.05) 25px 25px;
+
+  
+}
+
+.box-main {
+  --button_radius: 0.75em;
+  --button_outline_color: #5a67d8;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+}
+
+
+
+.input {
+
+  padding: 12px 0.875rem;
+  font-size: 1rem;
+  border: 2px solid #000;
+  margin-top: -8px;
+  border-radius: 0.5rem;
+  box-shadow: 2.5px 3px 0 #000;
+  outline: none;
+  transition: ease 0.25s;
+}
+
+.input:focus {
+  box-shadow: 5.5px 7px 0 black;
+}
+
+
+.progess-bar {
+  color: #5a67d8;
+
+}
+
+.progess-bar::before {
+  position: absolute;
+  bottom: 6px;
+  border-radius: 30px;
+  border-bottom: dashed 5px #7f8bfa;
+  content: "";
+  height: 5px;
+  width: 100%;
+}
+
+
 
 /* Responsive breakpoints */
 @media (min-width: 640px) {
@@ -38,17 +208,40 @@ small {
   }
 
   h1 {
-    font-size: 2.25rem; /* ~38px */
+    font-size: 2.25rem;
+    /* ~38px */
   }
 
   h2 {
-    font-size: 2rem; /* ~34px */
+    font-size: 2rem;
+    /* ~34px */
   }
 
   h3 {
-    font-size: 1.75rem; /* ~30px */
+    font-size: 1.75rem;
+    /* ~30px */
   }
 }
+
+/* Optional additions */
+.perspective {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+
+
 
 @media (min-width: 1024px) {
   html {
@@ -56,14 +249,17 @@ small {
   }
 
   h1 {
-    font-size: 2.5rem; /* ~45px */
+    font-size: 2.5rem;
+    /* ~45px */
   }
 
   h2 {
-    font-size: 2.25rem; /* ~40px */
+    font-size: 2.25rem;
+    /* ~40px */
   }
 
   h3 {
-    font-size: 2rem; /* ~36px */
+    font-size: 2rem;
+    /* ~36px */
   }
 }

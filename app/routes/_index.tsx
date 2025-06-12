@@ -1,234 +1,245 @@
-"use client"
+import { MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
+import StatsDisplay from "~/components/StatsDisplay";
 
-import type React from "react"
-import type { MetaFunction } from "@remix-run/node"
-import { useState, useEffect } from "react"
+import { loader as firebaseLoader } from "~/libs/firebase/firebase.server"; 
+
 
 export const meta: MetaFunction = () => {
+  const title = 'Selfness - เปลี่ยนความกลัวเป็นความกล้า คว้าทุกโอกาส';
+  const description = 'Selfness: แอปพลิเคชันพัฒนาทักษะ Soft Skill และการสื่อสาร ช่วยให้คนที่ไม่กล้าพูด ไม่กล้าเข้าสังคม ปลดล็อกความมั่นใจ เพื่อคว้าทุกโอกาสในชีวิต.';
+  const url = 'https://selfness.khain.app/'; // **สำคัญ: URL ของหน้าหลักแอปพลิเคชันของคุณ**
+  const imageUrl = 'https://selfness.khain.app/images/selfness-home-og-image.jpg'; // **สำคัญ: URL ของรูปภาพ Open Graph 1200x630px ที่คุณสร้างขึ้น**
+
   return [
-    { title: "Selfness – Dare to Begin" },
-    {
-      name: "description",
-      content: "Tools to spark your courage and push you toward bold new beginnings.",
-    },
-  ]
-}
+    // Standard Meta Tags for SEO
+    { title: title },
+    { name: 'description', content: description },
+    { name: 'keywords', content: 'Selfness, Soft Skill, การสื่อสาร, พัฒนาตัวเอง, ความมั่นใจ, กล้าพูด, กล้าเข้าสังคม, ปลดล็อกโอกาส, แอปพลิเคชัน, พัฒนาบุคลิกภาพ' },
+    { name: 'robots', content: 'index, follow' }, // บอก Search Engine ให้จัดทำดัชนีและติดตามลิงก์
+
+    // Open Graph Tags for Social Media Sharing (e.g., Facebook, Line)
+    { property: 'og:title', content: title },
+    { property: 'og:description', content: description },
+    { property: 'og:url', content: url },
+    { property: 'og:type', content: 'website' }, // 'website' เหมาะสำหรับหน้าหลัก
+    { property: 'og:image', content: imageUrl },
+    { property: 'og:image:width', content: '1200' }, // แนะนำความกว้างสำหรับ OG Image
+    { property: 'og:image:height', content: '630' }, // แนะนำความสูงสำหรับ OG Image
+    { property: 'og:site_name', content: 'Selfness' },
+    { property: 'og:locale', content: 'th_TH' }, // ระบุภาษาไทย
+
+    // Twitter Card Tags for Twitter Sharing
+    { name: 'twitter:card', content: 'summary_large_image' }, // แนะนำสำหรับรูปภาพขนาดใหญ่
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: imageUrl },
+    { name: 'twitter:alt', content: 'Selfness: แอปพลิเคชันพัฒนา Soft Skill และการสื่อสารสำหรับคนที่ไม่กล้าพูด ไม่กล้าเข้าสังคม' }, // ข้อความอธิบายรูปภาพสำหรับ Twitter
+   
+  ];
+};
+
+export const loader = firebaseLoader;
+
 
 export default function Index() {
-  const [email, setEmail] = useState("")
-  const [days, setDays] = useState(0)
-  const [hours, setHours] = useState(0)
-  const [minutes, setMinutes] = useState(0)
-  const [seconds, setSeconds] = useState(0)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
-  useEffect(() => {
-    const launchDate = new Date("2025-07-01T00:00:00")
-
-    const updateCountdown = () => {
-      const now = new Date()
-      const difference = launchDate.getTime() - now.getTime()
-
-      const d = Math.floor(difference / (1000 * 60 * 60 * 24))
-      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-      const s = Math.floor((difference % (1000 * 60)) / 1000)
-
-      setDays(d)
-      setHours(h)
-      setMinutes(m)
-      setSeconds(s)
-    }
-
-    updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
-    setEmail("")
-  }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-inter">
-      {/* Simple header */}
-      <header className="border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-lg font-medium text-gray-900 font-bold">Selfness</div>
-            <nav className="hidden md:flex items-center space-x-8 text-sm text-gray-600">
-              {/* <a href="#" className="hover:text-gray-900 transition-colors">About</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">Contact</a> */}
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-6 py-20">
-        {/* Hero section */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Dare to Begin
-          </h1>
-          <p className="text-xl text-gray-600 mb-4 max-w-2xl mx-auto leading-relaxed">
-            We're building tools to spark your courage and push you toward bold new beginnings.
-          </p>
-          <p className="text-sm text-gray-500">
-            Launching July 1, 2025
-          </p>
-        </div>
-
-        {/* Countdown */}
-        <div className="mb-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                {days.toString().padStart(2, '0')}
-              </div>
-              <div className="text-sm text-gray-500 uppercase tracking-wide">
-                Days
-              </div>
+    <>
+      <Header />
+      <main className="min-h-screen pb-10 bg-[#f9f9f9] text-[#1a1a1a] px-6 py-20`">
+        {/* --- Hero Section --- */}
+        <section className="mb-20">
+          <div className="max-container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="text-center md:text-left md:w-1/2">
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
+                Dare to begin
+              </h1>
+              <p className="text-lg md:text-xl text-[#4a4a4a] mb-8 max-w-lg mx-auto md:mx-0">
+                ปลดล็อกศักยภาพการสื่อสารในตัวคุณ ช่วยให้คุณพูดเก่งขึ้น
+                และเข้าสังคมได้อย่างมั่นใจ
+              </p>
+              <Link to="/questions">
+                <button className="">
+                  <div className="btn-primary">เริ่มทดสอบทักษะ Soft Skill ของคุณ</div>
+                </button>
+              </Link>
             </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                {hours.toString().padStart(2, '0')}
-              </div>
-              <div className="text-sm text-gray-500 uppercase tracking-wide">
-                Hours
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                {minutes.toString().padStart(2, '0')}
-              </div>
-              <div className="text-sm text-gray-500 uppercase tracking-wide">
-                Minutes
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                {seconds.toString().padStart(2, '0')}
-              </div>
-              <div className="text-sm text-gray-500 uppercase tracking-wide">
-                Seconds
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Email signup */}
-        <div className="max-w-md mx-auto mb-20">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-              Get notified when we launch
-            </h2>
-            <p className="text-gray-600">
-              Be the first to experience what we're building.
-            </p>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+            <div className="md:w-1/2 flex justify-center">
+              {/*
+          // แนะนำให้เปลี่ยนรูปภาพนี้เป็นรูปที่สื่อถึงการพัฒนาตนเอง, การสื่อสาร, หรือความมั่นใจ
+          // อาจเป็นคนกำลังพูดอย่างมั่นใจ, หรือกราฟิกที่สื่อถึงการพัฒนาทักษะ
+          // ตัวอย่าง: <img src="/images/confident-person-speaking.png" alt="Confident person speaking" className="w-full max-w-sm md:max-w-md rounded-lg shadow-xl"/>
+        */}
+              <img
+                src="/images/Miroodles - Color Comp.png"
+                alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                className="w-full max-w-xs md:max-w-sm lg:max-w-md"
               />
             </div>
-            <button
-              type="submit"
-              disabled={isSubmitted}
-              className={`w-full py-3 px-4 rounded-lg font-medium transition-all ${
-                isSubmitted 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-950'
-              }`}
-            >
-              {isSubmitted ? '✓ Thanks! We\'ll be in touch.' : 'Notify me'}
-            </button>
-          </form>
-        </div>
+          </div>
+        </section>
 
-        {/* Features preview */}
-        <div className="grid md:grid-cols-3 gap-12 mb-20">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+        {/* register section */}
+        <StatsDisplay />
+
+        {/* --- Problems & Solutions Section --- */}
+        <section className="mb-20">
+          <div className="max-container mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-12">
+              ปัญหา &amp; ทางออก ที่ Selfness ช่วยคุณได้
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {/* Problem 1 */}
+              <div className="bg-white p-8 rounded-lg  hover:shadow-xl transition-shadow duration-300">
+                <h3 className="text-2xl font-semibold mb-4 text-[#333]">
+                  เข้าสังคมไม่เก่ง
+                </h3>
+                <p className="text-[#555] leading-relaxed">
+                  รู้สึกประหม่าเมื่อต้องเจอคนใหม่ๆ ไม่รู้จะเริ่มบทสนทนายังไง?
+                  Selfness มีแบบฝึกหัดสร้างความมั่นใจในการเข้าสังคม
+                  และสถานการณ์จำลองที่ช่วยให้คุณเริ่มบทสนทนาได้อย่างเป็นธรรมชาติ.
+                </p>
+              </div>
+              {/* Problem 2 */}
+              <div className="bg-white p-8 rounded-lg  hover:shadow-xl transition-shadow duration-300">
+                <h3 className="text-2xl font-semibold mb-4 text-[#333]">
+                  ไม่กล้าพูดในที่สาธารณะ
+                </h3>
+                <p className="text-[#555] leading-relaxed">
+                  เสียงสั่น ใจเต้นแรงเมื่อต้องพรีเซนต์งาน?
+                  เราช่วยคุณฝึกพูดหน้ากระจก วิเคราะห์โทนเสียงและภาษากายด้วย AI
+                  สร้างความคุ้นเคยกับการสื่อสารในที่สาธารณะ.
+                </p>
+              </div>
+              {/* Problem 3 */}
+              <div className="bg-white p-8 rounded-lg  hover:shadow-xl transition-shadow duration-300">
+                <h3 className="text-2xl font-semibold mb-4 text-[#333]">
+                  พูดไม่เก่ง / เรียบเรียงคำพูดยาก
+                </h3>
+                <p className="text-[#555] leading-relaxed">
+                  คิดอะไรได้แต่พูดออกมาไม่เป็นคำพูดที่เข้าใจง่าย?
+                  Selfness มีบทเรียนและภารกิจที่ช่วยให้คุณเรียบเรียงความคิด
+                  ใช้คำพูดที่เหมาะสม และสื่อสารได้อย่างมีประสิทธิภาพ.
+                </p>
+              </div>
+              {/* Problem 4 (Optional) */}
+              <div className="bg-white p-8 rounded-lg  hover:shadow-xl transition-shadow duration-300">
+                <h3 className="text-2xl font-semibold mb-4 text-[#333]">
+                  กลัวโดนเกลียด / กังวลคำตัดสิน
+                </h3>
+                <p className="text-[#555] leading-relaxed">
+                  คุณไม่จำเป็นต้องสมบูรณ์แบบ! เราช่วยปรับ Mindset
+                  สร้างความเข้าใจในตัวเอง และสอนวิธีรับมือกับความกังวล
+                  เพื่อให้คุณกล้าเป็นตัวของตัวเองอย่างมั่นใจ.
+                </p>
+              </div>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Spark Courage
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Tools designed to help you overcome fear and take the first step.
-            </p>
           </div>
-          
-          <div className="text-center">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
+        </section>
+
+        {/* --- Features Section --- */}
+        <section className="py-20 px-4">
+          <div className="max-w-6xl w-full  mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-12">ฟีเจอร์เด่นของ Selfness</h2>
+            <div className="grid gap-10">
+              {/* Feature 1 - Emoji Left, Content Right */}
+              <div className="grid md:grid-cols-2 items-center gap-10 p-8 rounded-lg transition-shadow duration-300">
+                <div className="flex justify-center md:justify-end items-center">
+                  <img
+                    src="/images/hug.png"
+                    alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                  />
+                </div>
+                <div className="max-w-md mx-auto md:mx-0">
+                  <h3 className="text-2xl font-semibold mb-3 text-[#333] text-center md:text-left">แบบสำรวจประเมินทักษะ</h3>
+                  <p className="text-[#555] leading-relaxed text-center md:text-left">
+                    เริ่มต้นด้วยการวิเคราะห์จุดแข็งและจุดที่ต้องพัฒนา เพื่อสร้างเส้นทางการเรียนรู้ที่เหมาะสมกับคุณที่สุด.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 2 - Content Left, Emoji Right */}
+              <div className="grid md:grid-cols-2 items-center gap-10 p-8 rounded-lg transition-shadow duration-300">
+                <div className="max-w-md mx-auto md:mx-0 order-2 md:order-1">
+                  <h3 className="text-2xl font-semibold mb-3 text-[#333] text-center md:text-left">
+                    ภารกิจประจำวันแบบ Gamified
+                  </h3>
+                  <p className="text-[#555] leading-relaxed text-center md:text-left">
+                    ฝึกฝนทักษะผ่าน Task สั้นๆ สนุกๆ ในทุกวัน เหมือนเล่นเกมเพื่อเก็บเลเวลการสื่อสารของคุณ.
+                  </p>
+                </div>
+                <div className="flex justify-center md:justify-start items-center order-1 md:order-2">
+                  <img
+                    src="/images/game.png"
+                    alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                  />
+                </div>
+              </div>
+
+              {/* Feature 3 - Emoji Left, Content Right */}
+              <div className="grid md:grid-cols-2 items-center gap-10 p-8 rounded-lg transition-shadow duration-300">
+                <div className="flex justify-center md:justify-end items-center">
+                  <img
+                    src="/images/ai.png"
+                    alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                  />
+                </div>
+                <div className="max-w-md mx-auto md:mx-0">
+                  <h3 className="text-2xl font-semibold mb-3 text-[#333] text-center md:text-left">
+                    AI วิเคราะห์และให้คำแนะนำส่วนบุคคล
+                  </h3>
+                  <p className="text-[#555] leading-relaxed text-center md:text-left">
+                    รับฟีดแบ็กเชิงลึกจากการวิเคราะห์การพูดและภาษากายด้วย AI พร้อมคำแนะนำที่แม่นยำเพื่อแก้ไขจุดบกพร่องของคุณ.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 4 - Content Left, Emoji Right */}
+              <div className="grid md:grid-cols-2 items-center gap-10 p-8 rounded-lg transition-shadow duration-300">
+                <div className="max-w-md mx-auto md:mx-0 order-2 md:order-1">
+                  <h3 className="text-2xl font-semibold mb-3 text-[#333] text-center md:text-left">
+                    สถานการณ์จำลองแบบโต้ตอบ
+                  </h3>
+                  <p className="text-[#555] leading-relaxed text-center md:text-left">
+                    ฝึกโต้ตอบในสถานการณ์ทางสังคมต่างๆ กับ AI เพื่อเตรียมความพร้อมสำหรับชีวิตจริงโดยไม่ต้องกังวล.
+                  </p>
+                </div>
+                <div className="flex justify-center md:justify-start items-center order-1 md:order-2">
+                  <img
+                    src="/images/box.png"
+                    alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                  />
+                </div>
+              </div>
+
+              {/* Feature 5 - Emoji Left, Content Right */}
+              <div className="grid md:grid-cols-2 items-center gap-10 p-8 rounded-lg transition-shadow duration-300">
+                <div className="flex justify-center md:justify-end items-center">
+                  <img
+                    src="/images/growth.png"
+                    alt="Illustration of a hand holding a brush, symbolizing creativity and self-improvement"
+                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                  />
+                </div>
+                <div className="max-w-md mx-auto md:mx-0">
+                  <h3 className="text-2xl font-semibold mb-3 text-[#333] text-center md:text-left">ติดตามความก้าวหน้า</h3>
+                  <p className="text-[#555] leading-relaxed text-center md:text-left">
+                    เห็นพัฒนาการของตัวเองอย่างชัดเจนผ่านกราฟและสถิติ สร้างแรงบันดาลใจให้คุณมุ่งมั่นต่อไป.
+                  </p>
+                </div>
+              </div>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Track Progress
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Monitor your journey and celebrate every step forward.
-            </p>
           </div>
-          
-          <div className="text-center">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Find Community
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Connect with others on similar journeys of growth and change.
-            </p>
-          </div>
-        </div>
+        </section>
       </main>
-
-      {/* Simple footer */}
-      <footer className="border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-sm text-gray-500 mb-4 md:mb-0">
-              © {new Date().getFullYear()} Selfness. All rights reserved.
-            </div>
-            <div className="flex space-x-6">
-              {/* <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a> */}
-              <a href="mailto:khain.app@gmail.com" className="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
+      <Footer></Footer>
+    </>
+  );
 }
