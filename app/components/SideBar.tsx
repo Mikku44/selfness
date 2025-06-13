@@ -1,7 +1,9 @@
 import { Link } from "@remix-run/react";
+import MobileSidebar from "./MobileSidebar";
 
 export default function SideBar() {
     return (
+        <>   
         <aside className="w-[300px]  p-4 h-screen border-r-2 hidden md:block flex-shrink-0">
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -56,6 +58,10 @@ export default function SideBar() {
                     </li>  */}
                 </ul>
             </nav>
+            
         </aside>
+         <MobileSidebar />
+        </>
+     
     )
 }

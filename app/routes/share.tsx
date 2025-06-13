@@ -63,7 +63,7 @@ export default function FeedPage() {
     return (<div className="flex">
 
         <SideBar />
-        <main className="max-h-[100vh] w-full overflow-auto p-5 bg-zinc-200/30">
+        <main className="max-h-[100vh] w-full overflow-auto p-5 pb-20 bg-zinc-200/30">
             <h1 className="text-2xl font-bold mb-6 ">Selfness Feed</h1>
             <WritePost />
             {posts ? posts.map((post: Post) => (

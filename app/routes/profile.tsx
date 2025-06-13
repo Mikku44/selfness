@@ -54,6 +54,7 @@ export default function profile() {
         <div className="flex " >
 
             <SideBar />
+            
             <main className="max-h-[100vh] w-full bg-zinc-200/30 overflow-auto p-5">
                 <section className="min-h-[150vh] ">
                     Profile s

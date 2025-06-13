@@ -14,10 +14,10 @@ export const meta: MetaFunction = () => {
 export default function _questions() {
 
   return (
-    <div className="flex">
+    <div className="flex ">
 
       <SideBar />
-      <main className="max-h-[100vh] w-full overflow-auto p-5">
+      <main className="max-h-[100vh] pb-10 w-full overflow-auto p-5">
         <section className="min-h-[150vh]">
           <CommunicationAssessmentForm />
         </section>
