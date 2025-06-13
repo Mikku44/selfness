@@ -44,11 +44,11 @@ export default function SideBar() {
                             ร้านค้า
                         </Link>
                     </li>*/}
-                    <li>
+                    {/* <li>
                         <Link to="/profile" className="block py-2 px-3 rounded hover:bg-zinc-50 transition-colors">
                             โปรไฟล์
                         </Link>
-                    </li>
+                    </li> */}
                     {/* <li>
                         <Link to="#" className="block py-2 px-3 rounded hover:bg-zinc-50 transition-colors">
                             การตั้งค่า

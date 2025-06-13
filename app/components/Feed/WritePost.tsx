@@ -176,7 +176,7 @@ export default function WritePost() {
 
                     <section className="flex justify-between">
                         <div className="flex gap-2 items-center">
-                            <label htmlFor="file">
+                            {/* <label htmlFor="file">
                                 <input
                                     id="file"
                                     type="file"
@@ -229,7 +229,7 @@ export default function WritePost() {
                                     </g>
                                 </svg>
                                 </div>
-                            </label>
+                            </label> */}
                         </div>
                         <button
                             type="submit"

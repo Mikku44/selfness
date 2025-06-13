@@ -20,6 +20,7 @@ import RadarChart from './RadarChart';
 import BubbleChat from './BubbleChat';
 import HoldToContinueButton from './HoldToContinueButton';
 import QuickEvent from './QuickEvent';
+import TextEffect from './TextEffect';
 
 
 
@@ -36,6 +37,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     // State to store user answers
     const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+    const [clickedCount, setClickedCount] = useState(0);
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [calculatedScores, setCalculatedScores] = useState<any>(null);
@@ -61,23 +63,52 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     const QuestionRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (activeCategoryIndex == 1) {
-            countQNStats();
+     useEffect(() => {
+        // Handle countQNStats when activeCategoryIndex is 1
+        if (activeCategoryIndex === 1) {
+            // Assuming countQNStats is a function defined elsewhere
+            // countQNStats();
+            // console.log("Calling countQNStats()");
         }
 
-        if(activeCategoryIndex > 1){
-            setTrigger(true)
+        // When activeCategoryIndex becomes greater than 1, set trigger to true
+        // if (activeCategoryIndex > 1) {
+        //     setTrigger(true);
+        // }
+
+        // Handle auto-setting trigger to false after 3 seconds when it becomes true
+        let timerId :any;
+        if (trigger) {
+            // Set a timeout to set trigger to false after 3000 milliseconds (3 seconds)
+            timerId = setTimeout(() => {
+                setTrigger(false);
+                setClickedCount(0);
+                console.log("Trigger set to false after 3 seconds.");
+            }, 3000); // 3000 milliseconds = 3 seconds
         }
 
-        if (QuestionRef?.current)
-            QuestionRef?.current?.scrollIntoView({ behavior: "smooth" }); // or behavior: "auto"
-    }, [activeCategoryIndex]);
+        // Scroll into view if QuestionRef exists
+        if (QuestionRef?.current) {
+            QuestionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+
+        // Cleanup function for the effect
+        // This will clear the timeout if the component unmounts
+        // or if activeCategoryIndex/trigger changes before the timeout completes.
+        return () => {
+            if (timerId) {
+                clearTimeout(timerId);
+                setTrigger(false)
+                console.log("Timeout cleared.");
+            }
+        };
+
+    }, [activeCategoryIndex, trigger]);
 
     useEffect(() => {
         const fetchReGStats = async () => {
             const result: ReG[] = await getReGStats();
-            console.log(result)
+            // console.log(result)
 
             const aggregateData = (result: ReG[]) => {
                 const categoryTotals = {
@@ -127,7 +158,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                 console.log(scoreState)
                 const RGStat: ReG | any = await getRGOneWithID({ id: decodeFromRandom((scoreState)) }) || {};
 
-                console.log(RGStat)
+                // console.log(RGStat)
 
                 const scores: any = {}
 
@@ -407,12 +438,23 @@ const CommunicationAssessmentForm: React.FC = () => {
 
                 {/* Display the overall persona flashcard first */}
                 <div className="relative">
-                    <QuickEvent trigger={trigger} onClose={() => setTrigger(false)}>
-                        <BubbleChat className='absolute z-10 mb-5' text='คลิกข้างไว้เพื่อเล่นต่อ!' />
-                        <HoldToContinueButton
-                            onComplete={() => setTrigger(false)}
+                    <QuickEvent trigger={trigger} onClose={() => {setTrigger(false);setClickedCount(0)}}>
+                        <BubbleChat className='absolute z-10 mb-5' text='คลิกย้ำๆ เพื่อเล่นต่อ!' />
+                        {/* <HoldToContinueButton
+                            onComplete={() => {
+                                setTrigger(false)
+                                // alert("Let's go")
+                            }}
                             holdDuration={200}
-                        />
+                        /> */}
+                        <TextEffect clickedCount={clickedCount}/>
+                        <button
+                            onClick={(e) => {
+                                setClickedCount(prev => prev+1)
+                            }}
+                            className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
+                            <span className='btn-question duration-100 '>เพิ่มพลัง</span>
+                        </button>
                     </QuickEvent>
                     <BubbleChat className='absolute z-10 left-[40%] animate-bounce' text='คลิกเพื่อเปิดดูการ์ด!' />
                     {overallPersona && <FlashcardPersona persona={overallPersona} />}

@@ -107,7 +107,7 @@ function PostCard({ post }: { post: Post }) {
                             </svg>
                         </button>
                         {more && <div className="p-1 absolute right-0 shadow rounded-md min-w-[200px] mt-1">
-                            <button className="bg-white hover:bg-zinc-100/30 w-full px-2 py-1 text-left rounded-sm">Edit</button>
+                            {/* <button className="bg-white hover:bg-zinc-100/30 w-full px-2 py-1 text-left rounded-sm">Edit</button> */}
                             <button onClick={() => handleDelete()} className="bg-white hover:bg-zinc-100/30 w-full px-2 py-1 text-left rounded-sm">Delete</button>
                         </div>}
                     </div>
