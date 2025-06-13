@@ -9,5 +9,7 @@ RUN npm run build
 FROM node:20 AS runner
 WORKDIR /app
 COPY --from=builder /app ./
-ENV NODE_ENV production
+# Fix for the "LegacyKeyValueFormat" warning:
+# Changed 'ENV NODE_ENV production' to 'ENV NODE_ENV=production'
+ENV NODE_ENV=production
 CMD ["npm", "start"]
