@@ -59,9 +59,9 @@ const RadarChart: React.FC<RadarChartProps> = ({
                 area: {
                     // visible: true,
                     style: {
-                          fill: 'l(90) 0:#61DDAA 0.5:#78D3F8 1:#5B8FF9',
+                          fill: 'l(100) 0:#5a67d8  1:#5B8FF9',
                         stroke: '#ffffff',
-                        strokeOpacity:0,
+                        strokeOpacity:0.1,
                         fillOpacity: 0.50,
                     },
                 },
@@ -70,11 +70,11 @@ const RadarChart: React.FC<RadarChartProps> = ({
                     size: 4,
                     style: (datum: any) => {
                         const colorMap: Record<string, string> = {
-                            Anxiety: '#61DDAA',
-                            Clarity: '#78D3F8',
-                            Comms: '#5B8FF9',
-                            Conflict: '#F6BD16',
-                            Social: '#7262FD',
+                            Anxiety: '#fe3a52',
+                            Clarity: '#61DDAA',
+                            Comms: '#F6BD16',
+                            Conflict: '#5a67d8',
+                            Social: '#3cc5ff',
                         };
 
                         return {

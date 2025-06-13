@@ -1,0 +1,53 @@
+/* Define your colors as CSS custom properties (variables) */
+/* Or replace them directly with hex codes or named colors */
+:root {
+    --bubble-main-color: #ffffff;
+    /* Example: steelblue, a darker shade */
+
+    --border : 2px rgba(66, 66, 66, 0.289) solid;
+}
+
+
+.bubble {
+    border-radius: 7px 7px 10px 10px;
+    /* From @include border-radius */
+
+    position: relative;
+    padding: 10px;
+    background: var(--bubble-main-color);
+    border:var(--border);
+    color:#666666;
+    z-index: 10;
+
+}
+
+.bubble::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 52px;
+    height: 15px;
+    background-color: var(--bubble-main-color);
+    bottom: -0px;
+    /* border: 3px var(--bubble-main-color) solid; */
+    /* border: solid red; */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 30% 0;
+}
+.bubble::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 20px;
+  height: 20px;
+  background-color: var(--bubble-main-color);
+  bottom: -11px;
+  border:var(--border);
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 0 0 30% 0;
+
+}
+
+

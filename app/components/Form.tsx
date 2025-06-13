@@ -17,6 +17,9 @@ import { useSearchParams } from '@remix-run/react';
 import { decodeFromRandom, encodeToRandom } from '~/libs/EncodeToDecode';
 import { questions } from '~/libs/questions/q1';
 import RadarChart from './RadarChart';
+import BubbleChat from './BubbleChat';
+import HoldToContinueButton from './HoldToContinueButton';
+import QuickEvent from './QuickEvent';
 
 
 
@@ -28,6 +31,8 @@ const CommunicationAssessmentForm: React.FC = () => {
 
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const [trigger, setTrigger] = useState(true);
 
     // State to store user answers
     const [answers, setAnswers] = useState<{ [key: string]: string }>({});
@@ -61,6 +66,10 @@ const CommunicationAssessmentForm: React.FC = () => {
             countQNStats();
         }
 
+        if(activeCategoryIndex > 1){
+            setTrigger(true)
+        }
+
         if (QuestionRef?.current)
             QuestionRef?.current?.scrollIntoView({ behavior: "smooth" }); // or behavior: "auto"
     }, [activeCategoryIndex]);
@@ -70,54 +79,6 @@ const CommunicationAssessmentForm: React.FC = () => {
             const result: ReG[] = await getReGStats();
             console.log(result)
 
-
-
-            const bubbleData = (result: ReG[]) => {
-                const data = result.flatMap((entry) => [
-                    {
-                        x: "Anxiety",
-                        y: entry.anxiety,
-                        z: entry.social,       // ใช้ขนาด bubble ตาม social
-                        group: entry.persona,
-                        id: entry.id,
-                        date: entry.date_key,
-                    },
-                    {
-                        x: "Clarity",
-                        y: entry.clarity,
-                        z: entry.social,
-                        group: entry.persona,
-                        id: entry.id,
-                        date: entry.date_key,
-                    },
-                    {
-                        x: "Comms",
-                        y: entry.comms,
-                        z: entry.social,
-                        group: entry.persona,
-                        id: entry.id,
-                        date: entry.date_key,
-                    },
-                    {
-                        x: "Conflict",
-                        y: entry.conflict,
-                        z: entry.social,
-                        group: entry.persona,
-                        id: entry.id,
-                        date: entry.date_key,
-                    },
-                    {
-                        x: "Social",
-                        y: entry.social,
-                        z: entry.social,
-                        group: entry.persona,
-                        id: entry.id,
-                        date: entry.date_key,
-                    },
-                ]);
-
-                return data;
-            };
             const aggregateData = (result: ReG[]) => {
                 const categoryTotals = {
                     "Anxiety": 0,
@@ -139,7 +100,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                 // Convert to chart data format
                 return Object.entries(categoryTotals).map(([category, total]) => ({
                     category,
-                    value: (total / result.length).toFixed(1)
+                    value: (total / result.length)
                 }));
             };
 
@@ -147,10 +108,10 @@ const CommunicationAssessmentForm: React.FC = () => {
 
             // Use one of the aggregation methods
             const data: any = aggregateData(result);
-            const allData: any = bubbleData(result);
+
 
             setCharAvg(data)
-            setChartDataAll(allData);
+
         }
 
         if (isSubmitted) {
@@ -313,7 +274,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
 
     return (
-        <div ref={QuestionRef} className="max-w-4xl mx-auto bg-white md:p-12 rounded-lg my-10">
+        <div ref={QuestionRef} className=" max-w-4xl  bg-white md:p-12 rounded-lg my-10">
             {!isSubmitted && <div className="">
                 <h2 className="text-3xl font-bold text-center mb-6 text-[#1a1a1a]">
                     มาดูกันว่า ทักษะคุยกับคนของคุณดีแค่ไหน?
@@ -445,11 +406,21 @@ const CommunicationAssessmentForm: React.FC = () => {
                 </h3>
 
                 {/* Display the overall persona flashcard first */}
-                {overallPersona && <FlashcardPersona persona={overallPersona} />}
+                <div className="relative">
+                    <QuickEvent trigger={trigger} onClose={() => setTrigger(false)}>
+                        <BubbleChat className='absolute z-10 mb-5' text='คลิกข้างไว้เพื่อเล่นต่อ!' />
+                        <HoldToContinueButton
+                            onComplete={() => setTrigger(false)}
+                            holdDuration={200}
+                        />
+                    </QuickEvent>
+                    <BubbleChat className='absolute z-10 left-[40%] animate-bounce' text='คลิกเพื่อเปิดดูการ์ด!' />
+                    {overallPersona && <FlashcardPersona persona={overallPersona} />}
+                </div>
 
                 <div className=" mx-auto w-full justify-center items-center flex md:gap-3 gap-5 flex-wrap">
                     <button className=' md:w-auto w-[90%] bubbly-button animate' onClick={() => {
-
+                        setTrigger(true)
                         console.log("Please login before")
 
                     }}>
@@ -534,7 +505,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                     description="ค่าเฉลี่ยคะแนนที่รวบรวมทั้งหมด"
                 />
 
-               
+
 
             </div>}
 

@@ -12,8 +12,8 @@ import { timeAgo } from "~/libs/DateFormat";
 export const meta: MetaFunction = () => {
     const title = 'Selfness Share Feed - โพสต์เลย! แบ่งปันทุกความรู้และทริคการพัฒนาตัวเอง';
     const description = 'Selfness Share Feed: พื้นที่ปลอดภัยให้คุณฝึกโพสต์ แบ่งปันความรู้ ทริคการพัฒนา Soft Skill และเรื่องราวของคุณ เพื่อสร้างความมั่นใจและแรงบันดาลใจให้ผู้อื่น';
-    const url = 'https://selfness.khain/share'; // **IMPORTANT: Replace with your actual domain**
-    const imageUrl = 'https://selfness.khain/images/selfness-share-og-image.jpg'; // **IMPORTANT: Create a compelling image (1200x630px recommended) and replace this URL**
+    const url = 'https://selfness.khain.app/share'; // **IMPORTANT: Replace with your actual domain**
+    const imageUrl = 'https://selfness.khain.app/images/selfness-share-og-image.jpg'; // **IMPORTANT: Create a compelling image (1200x630px recommended) and replace this URL**
 
     return [
         // Standard Meta Tags

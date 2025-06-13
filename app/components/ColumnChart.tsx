@@ -29,7 +29,7 @@ const ColumnChart: React.FC<ColumnChartProps> = ({ data,yLabel = "", title, desc
                 xField: 'category',
                 yField: 'value',
                 seriesField: 'category',
-                color: ['#5B8FF9', '#61DDAA', '#F6BD16', '#7262FD', '#78D3F8', '#9661BC'],
+                color: ['#fe3a52', '#61DDAA', '#F6BD16', '#7262FD', '#78D3F8', '#3cc5ff'],
                 meta: {
                     category: {
                         alias: 'Category',
@@ -38,12 +38,12 @@ const ColumnChart: React.FC<ColumnChartProps> = ({ data,yLabel = "", title, desc
                         alias: 'Value',
                     },
                 },
-                interactions: [{ type: 'active-region' }, { type: 'element-highlight' }],
+                // interactions: [{ type: 'active-region' }, { type: 'element-highlight' }],
                 tooltip: {
                     showTitle: true,
                     // title: 'Percentage',
                     formatter: (datum: any) => {
-                        return { name: datum.category, value: datum.value };
+                        return { name: datum.category, value: (datum.value).toFixed(2) };
                     },
                     domStyles: {
                         'g2-tooltip': {

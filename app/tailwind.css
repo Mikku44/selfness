@@ -6,6 +6,9 @@
 :root {
   --primary-color: rgb(255 178 44);
   --secondary-color: #5a67d8;
+  --thirdary-color: #fe3a52;
+  --forthary-color: #3cc5ff;
+  --fifthary-color: #61DDAA;
 }
 
 html {

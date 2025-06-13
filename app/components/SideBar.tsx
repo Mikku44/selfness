@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 
 export default function SideBar() {
     return (
-        <aside className="w-64  p-4 h-screen border-r-2 hidden md:block flex-shrink-0">
+        <aside className="w-[300px]  p-4 h-screen border-r-2 hidden md:block flex-shrink-0">
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://fonts.gstatic.com" />
             <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap" rel="stylesheet" />

@@ -238,7 +238,7 @@ export default function PlayingCards({ emoji = "🚀" }: { emoji?: string }) {
                                         {/* Back Face */}
                                         <div className="absolute backface-hidden w-full h-full rotate-y-180 bg-white rounded-xl shadow-xl flex items-center justify-center flex-col gap-5 p-4">
                                             <p className="text-center text-lg text-gray-800"><br />{openedCard?.ref}</p>
-                                            <div className="flex gap-2 items-center justify-center">
+                                            {isFlipped && <div className="flex gap-2 items-center justify-center">
                                                 <button
                                                     aria-label="get the card"
                                                     onClick={(e) => {
@@ -306,7 +306,7 @@ export default function PlayingCards({ emoji = "🚀" }: { emoji?: string }) {
                                                     </svg>
                                                 </button>
 
-                                            </div>
+                                            </div>}
                                         </div>
 
 
