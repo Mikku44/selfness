@@ -4,12 +4,13 @@ import { createPost } from "~/services/PostsService";
 import { inferMediaTypeFromMime } from "~/libs/MIME";
 import { uploadFileToStorage } from "~/libs/firebase/uploadFile";
 import { Post } from "~/Models/Post";
+import { useAuth } from "../Contexts/AuthContext";
 
 
 export default function WritePost() {
-    const navigate = useNavigate();
+    const {user} = useAuth()
     const [form, setForm] = useState({
-        display_name: "",
+        display_name: user?.displayName || "",
         user_id: "", // Set this dynamically if auth is available
         content: "",
         media: null,

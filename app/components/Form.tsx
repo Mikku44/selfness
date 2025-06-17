@@ -5,7 +5,7 @@ import ProgressBar from './ProgressBar';
 import { Question } from '~/Models/Question';
 import { calculateAssessmentScores } from '~/libs/CalcForms';
 import ScoreInterpretation from './ScoreInterpretation';
-import { calculateOverallScore, Flashcard, getFlashcardPersona } from '~/libs/flashcards';
+import { Flashcard, getFlashcardPersona } from '~/libs/flashcards';
 import FlashcardPersona from './FlashcardPersona';
 import { ShareButton } from './ShareButton';
 import { updateUsageStats } from '~/services/UsageStatsService.client';
@@ -21,6 +21,10 @@ import BubbleChat from './BubbleChat';
 import HoldToContinueButton from './HoldToContinueButton';
 import QuickEvent from './QuickEvent';
 import TextEffect from './TextEffect';
+import { selfHelpQuotesTH } from '~/libs/quotes';
+import { addUserAchievement, patchUserOverallStats } from '~/services/UserService';
+import { useAuth } from './Contexts/AuthContext';
+import { toast } from 'sonner';
 
 
 
@@ -30,9 +34,9 @@ import TextEffect from './TextEffect';
 const CommunicationAssessmentForm: React.FC = () => {
     // Define your questions based on the categories discussed
 
+    const { UserInfo } = useAuth()
 
     const [searchParams, setSearchParams] = useSearchParams();
-
     const [trigger, setTrigger] = useState(true);
 
     // State to store user answers
@@ -57,17 +61,24 @@ const CommunicationAssessmentForm: React.FC = () => {
         { category: 'Conflict', value: 0 },
         { category: 'Social', value: 0 },
     ]);
-    const [chartDataAll, setChartDataAll] = useState<any>(null);
+
+    const [quote, setQuote] = useState("");
+
+
+    const randomQuote = () => {
+        const randomIndex = Math.floor(Math.random() * selfHelpQuotesTH.length);
+        setQuote(selfHelpQuotesTH[randomIndex].text);
+    }
 
 
 
     const QuestionRef = useRef<HTMLDivElement>(null);
 
-     useEffect(() => {
+    useEffect(() => {
         // Handle countQNStats when activeCategoryIndex is 1
         if (activeCategoryIndex === 1) {
             // Assuming countQNStats is a function defined elsewhere
-            // countQNStats();
+            countQNStats();
             // console.log("Calling countQNStats()");
         }
 
@@ -77,14 +88,14 @@ const CommunicationAssessmentForm: React.FC = () => {
         // }
 
         // Handle auto-setting trigger to false after 3 seconds when it becomes true
-        let timerId :any;
+        let timerId: any;
         if (trigger) {
             // Set a timeout to set trigger to false after 3000 milliseconds (3 seconds)
             timerId = setTimeout(() => {
                 setTrigger(false);
                 setClickedCount(0);
                 console.log("Trigger set to false after 3 seconds.");
-            }, 3000); // 3000 milliseconds = 3 seconds
+            }, 5000); // 3000 milliseconds = 3 seconds
         }
 
         // Scroll into view if QuestionRef exists
@@ -104,6 +115,13 @@ const CommunicationAssessmentForm: React.FC = () => {
         };
 
     }, [activeCategoryIndex, trigger]);
+
+    useEffect(() => {
+        if (activeCategoryIndex > 0) {
+            randomQuote()
+            setTrigger(true)
+        }
+    }, [activeCategoryIndex]);
 
     useEffect(() => {
         const fetchReGStats = async () => {
@@ -192,8 +210,8 @@ const CommunicationAssessmentForm: React.FC = () => {
                 ])
 
                 setCalculatedScores(scores);
-                const overallScore = calculateOverallScore(scores); // Calculate overall score
-                const persona = getFlashcardPersona(overallScore); // Get the persona
+                // const overallScore = calculateOverallScore(scores); // Calculate overall score
+                const persona = getFlashcardPersona(scores); // Get the persona
                 setOverallPersona(persona); // Set the persona to state
             }
         };
@@ -235,8 +253,8 @@ const CommunicationAssessmentForm: React.FC = () => {
         event.preventDefault();
         // Calculate scores
         const scores = calculateAssessmentScores(questions, answers);
-        const overallScore = calculateOverallScore(scores); // Calculate overall score
-        const persona = getFlashcardPersona(overallScore); // Get the persona
+        // const overallScore = calculateOverallScore(scores); // Calculate overall score
+        const persona = getFlashcardPersona(scores); // Get the persona
         setOverallPersona(persona); // Set the persona to state
 
         const RGStat: any = {
@@ -278,12 +296,12 @@ const CommunicationAssessmentForm: React.FC = () => {
         ])
 
         setShowResults(true);
-        console.log('Submitted Answers:', answers);
-        console.log('Calculated Category Scores:', scores);
-        console.log('Overall Score:', overallScore);
-        console.log('Overall Persona:', persona);
-        console.log('Category Scores:', scores);
-        alert('แบบสำรวจเสร็จสมบูรณ์! (ดูผลใน Console)');
+        // console.log('Submitted Answers:', answers);
+        // console.log('Calculated Category Scores:', scores);
+        // console.log('Overall Score:', overallScore);
+        // console.log('Overall Persona:', persona);
+        // console.log('Category Scores:', scores);
+        // alert('แบบสำรวจเสร็จสมบูรณ์! (ดูผลใน Console)');
         setCalculatedScores(scores);
         setIsSubmitted(true);
     };
@@ -426,6 +444,18 @@ const CommunicationAssessmentForm: React.FC = () => {
                     </div>
 
                 </form>
+
+                <QuickEvent trigger={trigger} onClose={() => { setTrigger(false); setClickedCount(0) }}>
+                    <BubbleChat className='absolute z-10 mb-5' text={quote} />
+
+                    <button
+                        onClick={(e) => {
+                            setTrigger(false)
+                        }}
+                        className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
+                        <span className='btn-question duration-100 '>ดำเนินการต่อ</span>
+                    </button>
+                </QuickEvent>
             </div>}
 
             {isSubmitted && <div>
@@ -438,7 +468,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
                 {/* Display the overall persona flashcard first */}
                 <div className="relative">
-                    <QuickEvent trigger={trigger} onClose={() => {setTrigger(false);setClickedCount(0)}}>
+                    <QuickEvent trigger={trigger} onClose={() => { setTrigger(false); setClickedCount(0) }}>
                         <BubbleChat className='absolute z-10 mb-5' text='คลิกย้ำๆ เพื่อเล่นต่อ!' />
                         {/* <HoldToContinueButton
                             onComplete={() => {
@@ -447,10 +477,10 @@ const CommunicationAssessmentForm: React.FC = () => {
                             }}
                             holdDuration={200}
                         /> */}
-                        <TextEffect clickedCount={clickedCount}/>
+                        <TextEffect clickedCount={clickedCount} />
                         <button
                             onClick={(e) => {
-                                setClickedCount(prev => prev+1)
+                                setClickedCount(prev => prev + 1)
                             }}
                             className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
                             <span className='btn-question duration-100 '>เพิ่มพลัง</span>
@@ -461,9 +491,25 @@ const CommunicationAssessmentForm: React.FC = () => {
                 </div>
 
                 <div className=" mx-auto w-full justify-center items-center flex md:gap-3 gap-5 flex-wrap">
-                    <button className=' md:w-auto w-[90%] bubbly-button animate' onClick={() => {
+                    <button className=' md:w-auto w-[90%] bubbly-button animate' onClick={async () => {
                         setTrigger(true)
-                        console.log("Please login before")
+                        if (UserInfo?.id) {
+                            patchUserOverallStats(UserInfo.id, { xp: 50 })
+                            toast("You got 50 XP")
+
+
+                            await addUserAchievement(UserInfo.id, {
+                                ACM_ID: overallPersona?.emoji || "",
+                                ACM_name: overallPersona?.title || "",
+                                amount: 1,
+                            });
+
+
+                            toast("Achievement unlocked!", {
+                                description: overallPersona?.title
+                            })
+                        }
+                        toast.warning("Please login before!")
 
                     }}>
                         <div className="btn-primary ">

@@ -9,6 +9,43 @@
   --thirdary-color: #fe3a52;
   --forthary-color: #3cc5ff;
   --fifthary-color: #61DDAA;
+  --secondary-color-dark: #515cc6;
+  --secondary-color-medium: #b9c0fe;
+  --secondary-color-light: #a8b1fe;
+  --fifthary-color-dark: rgb(27, 136, 91);
+  --primary-color-dark: rgb(233, 154, 17);
+
+
+ /* Primary Color - Yellow/Orange */
+--primary-color-dark: rgb(233, 154, 17);
+--primary-color: rgb(255, 178, 44);
+--primary-color-medium: rgb(255, 186, 65); /* added */
+--primary-color-light: rgb(255, 195, 85);
+
+/* Secondary Color - Blue/Purple */
+--secondary-color-dark: #515cc6;
+--secondary-color: #5a67d8;
+--secondary-color-medium: #b9c0fe;
+--secondary-color-light: #a8b1fe;
+
+/* Tertiary Color - Red/Pink */
+--tertiary-color-dark: #d42940;
+--tertiary-color: #fe3a52;
+--tertiary-color-medium: #ff5468; /* added */
+--tertiary-color-light: #ff6b7a;
+
+/* Quaternary Color - Light Blue */
+--quaternary-color-dark: #2ba8e6;
+--quaternary-color: #3cc5ff;
+--quaternary-color-medium: #54d0ff; /* added */
+--quaternary-color-light: #6dd4ff;
+
+/* Quinary Color - Green */
+--quinary-color-dark: rgb(27, 136, 91);
+--quinary-color: #61DDAA;
+--quinary-color-medium: #7de3bc; /* added */
+--quinary-color-light: rgb(181, 247, 214);
+
 }
 
 html {
@@ -67,6 +104,38 @@ small {
   transition: transform 0.1s ease;
 }
 
+.btn-secondary {
+  /* @apply bg-zinc-900 shadow-sm text-white rounded-md items-center px-2 py-1 duration-150 hover:opacity-90; */
+  --button_color: var(--secondary-color);
+  --button_outline_color: white;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.btn-fifthary {
+  /* @apply bg-zinc-900 shadow-sm text-white rounded-md items-center px-2 py-1 duration-150 hover:opacity-90; */
+  --button_color: var(--fifthary-color);
+  --button_outline_color: white;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
 .btn-disabled {
 
   --button_color: white;
@@ -99,10 +168,40 @@ small {
   transition: transform 0.1s ease;
 }
 
+.hidden-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden-scrollbar::scroll-marker {
+  display: none;
+}
+
+
 .btn-question-active {
 
   --button_color: white;
   --button_outline_color: #5a67d8;
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  background: var(--button_color);
+
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.btn-coin-active {
+
+  --button_color: #ffda44;
+  --button_outline_color: #feb627;
   display: block;
   box-sizing: border-box;
   border: 2px solid var(--button_outline_color);
@@ -130,31 +229,39 @@ button {
 
 
 button:hover .btn-primary,
+button:hover .btn-secondary,
+button:hover .btn-fifthary,
+button:hover .btn-question-active,
+button:hover .btn-coin-active,
 button:hover .btn-question {
   /* Pull the button upwards when hovered */
   transform: translateY(-0.33em);
 }
 
 button:active .btn-primary,
+button:active .btn-secondary,
+button:active .btn-fifthary,
+button:active .btn-coin-active,
+button:active .btn-question-active,
 button:active .btn-question {
   /* Push the button downwards when pressed */
   transform: translateY(0);
 }
 
-.box{
+.box {
   transition-duration: 300ms;
-  
+
 }
 
 .box:hover {
- box-shadow:
-  rgba(255, 215, 0, 0.4) 5px 5px,
-  rgba(255, 215, 0, 0.3) 10px 10px,
-  rgba(255, 215, 0, 0.2) 15px 15px,
-  rgba(255, 215, 0, 0.1) 20px 20px,
-  rgba(255, 215, 0, 0.05) 25px 25px;
+  box-shadow:
+    rgba(255, 215, 0, 0.4) 5px 5px,
+    rgba(255, 215, 0, 0.3) 10px 10px,
+    rgba(255, 215, 0, 0.2) 15px 15px,
+    rgba(255, 215, 0, 0.1) 20px 20px,
+    rgba(255, 215, 0, 0.05) 25px 25px;
 
-  
+
 }
 
 .box-main {
@@ -167,6 +274,12 @@ button:active .btn-question {
   border-radius: var(--button_radius);
   background: var(--button_outline_color);
 }
+
+.card-box {
+  @apply rounded-xl bg-white p-2 border-2;
+}
+
+
 
 
 
@@ -196,7 +309,8 @@ button:active .btn-question {
   position: absolute;
   bottom: 6px;
   border-radius: 30px;
-  border-bottom: dashed 5px #7f8bfa;
+  border-bottom: dashed 5px white;
+  opacity: 0.4;
   content: "";
   height: 5px;
   width: 100%;

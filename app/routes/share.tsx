@@ -8,6 +8,7 @@ import { MetaFunction } from "@remix-run/node";
 import '~/css/bubble.css';
 import { formatNumberShort } from "~/libs/NumberFormat";
 import { timeAgo } from "~/libs/DateFormat";
+import Overall from "~/components/game/Overall";
 
 export const meta: MetaFunction = () => {
     const title = 'Selfness Share Feed - โพสต์เลย! แบ่งปันทุกความรู้และทริคการพัฒนาตัวเอง';
@@ -63,14 +64,17 @@ export default function FeedPage() {
     return (<div className="flex">
 
         <SideBar />
-        <main className="max-h-[100vh] w-full overflow-auto p-5 pb-20 bg-zinc-200/30">
-            <h1 className="text-2xl font-bold mb-6 ">Selfness Feed</h1>
-            <WritePost />
-            {posts ? posts.map((post: Post) => (
-                <PostCard key={post.id} post={post} />
-            ))
-            : <div className="m-auto w-fit h-fit">Loading...</div>
-        }
+        <main className="max-h-[100vh] w-full flex overflow-auto p-5 pb-20 bg-zinc-200/30">
+            <section className=" max-w-4xl w-full">
+                <h1 className="text-2xl font-bold mb-6 ">Selfness Feed</h1>
+                <WritePost />
+                {posts ? posts.map((post: Post) => (
+                    <PostCard key={post.id} post={post} />
+                ))
+                    : <div className="m-auto w-fit h-fit">Loading...</div>
+                }
+            </section>
+            <Overall />
         </main>
     </div>
 

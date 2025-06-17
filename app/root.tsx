@@ -9,8 +9,16 @@ import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
 import CookieConsent from "./components/CookieConsent";
+import { AuthProvider } from "./components/Contexts/AuthContext";
+import AuthModal from "./components/auth/authModal";
+import { Toaster } from "sonner";
 
 export const links: LinksFunction = () => [
+  {
+    rel: "icon",
+    href: "/favicon.png",
+    type: "image/png",
+  },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -29,8 +37,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-         {/* Google Tag Manager (ส่วนแรก - ใน <head>) */}
-        <script
+        {/* Google Tag Manager (ส่วนแรก - ใน <head>) */}
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -38,13 +46,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-NGQ54J3S');`,
           }}
-        />
+        /> */}
         {/* End Google Tag Manager */}
         <Meta />
         <Links />
       </head>
       <body>
-         <noscript>
+        <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-NGQ54J3S"
             height="0"
@@ -53,7 +61,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           ></iframe>
         </noscript>
         <CookieConsent />
-        {children}
+        <Toaster position="top-center" closeButton richColors/>
+        <AuthProvider>
+          <AuthModal />
+          {children}
+        </AuthProvider>
+
         <ScrollRestoration />
         <Scripts />
       </body>

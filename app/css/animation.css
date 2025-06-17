@@ -1,0 +1,55 @@
+:root {
+  /* Smooth & Elegant */
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-gentle: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
+  
+  /* Bouncy & Playful */
+  --ease-bounce-soft: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-bounce-strong: cubic-bezier(0.68, -0.8, 0.265, 1.8);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  /* Sharp & Snappy */
+  --ease-snap: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-punch: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-quick: cubic-bezier(0.23, 1, 0.32, 1);
+  
+  /* Dramatic & Expressive */
+  --ease-dramatic: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-swoosh: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-glide: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Technical & Precise */
+  --ease-linear-soft: cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  --ease-power: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-exponential: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  
+  /* Organic & Natural */
+  --ease-organic: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-breathe: cubic-bezier(0.37, 0, 0.63, 1);
+  --ease-flow: cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.ease-smooth { transition-timing-function: var(--ease-smooth); }
+.ease-gentle { transition-timing-function: var(--ease-gentle); }
+.ease-silk { transition-timing-function: var(--ease-silk); }
+
+.ease-bounce-soft { transition-timing-function: var(--ease-bounce-soft); }
+.ease-bounce-strong { transition-timing-function: var(--ease-bounce-strong); }
+.ease-spring { transition-timing-function: var(--ease-spring); }
+
+.ease-snap { transition-timing-function: var(--ease-snap); }
+.ease-punch { transition-timing-function: var(--ease-punch); }
+.ease-quick { transition-timing-function: var(--ease-quick); }
+
+.ease-dramatic { transition-timing-function: var(--ease-dramatic); }
+.ease-swoosh { transition-timing-function: var(--ease-swoosh); }
+.ease-glide { transition-timing-function: var(--ease-glide); }
+
+.ease-linear-soft { transition-timing-function: var(--ease-linear-soft); }
+.ease-power { transition-timing-function: var(--ease-power); }
+.ease-exponential { transition-timing-function: var(--ease-exponential); }
+
+.ease-organic { transition-timing-function: var(--ease-organic); }
+.ease-breathe { transition-timing-function: var(--ease-breathe); }
+.ease-flow { transition-timing-function: var(--ease-flow); }
