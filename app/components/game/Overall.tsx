@@ -1,5 +1,6 @@
 import ProgressBar from "../ProgressBar";
 import { useAuth } from "../Contexts/AuthContext";
+import getRankByXP, { nextRank } from "~/libs/ranks";
 
 export default function Overall() {
     const { user,UserInfo, setOnLogin } = useAuth();
@@ -32,8 +33,8 @@ export default function Overall() {
                             <div className="flex gap-2 items-center ">
                                 <iframe className="size-12 inline" src="https://lottie.host/embed/b2e63c21-bb0e-49b6-b3f7-2cc96865143e/e9dNlFWP77.lottie"></iframe>
                                 <div className="w-full">
-                                    <div className="text-md text-zinc-600  mb-1">สะสมให้ครบ EXP!</div>
-                                    <ProgressBar progress={UserInfo?.overall?.xp || 0} maxProgress={400} showLabel={false} fillColor={"bg-[var(--primary-color)]"} />
+                                    <div className="text-md text-zinc-600  mb-1">สะสมให้ครบเพื่อเลื่อนสู่ {nextRank(UserInfo?.overall?.xp).name} </div>
+                                    <ProgressBar progress={UserInfo?.overall?.xp || 0} maxProgress={getRankByXP(UserInfo?.overall?.xp).maxXP} showLabel={false} fillColor={"bg-[var(--primary-color)]"} />
                                 </div>
                             </div>
                         </div>}

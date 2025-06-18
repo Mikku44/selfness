@@ -25,6 +25,7 @@ import { selfHelpQuotesTH } from '~/libs/quotes';
 import { addUserAchievement, patchUserOverallStats } from '~/services/UserService';
 import { useAuth } from './Contexts/AuthContext';
 import { toast } from 'sonner';
+import { toastSound } from './game/toastSound';
 
 
 
@@ -38,6 +39,8 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [trigger, setTrigger] = useState(true);
+
+    const [isReOpen, setIsReOpen] = useState(true);
 
     // State to store user answers
     const [answers, setAnswers] = useState<{ [key: string]: string }>({});
@@ -63,9 +66,6 @@ const CommunicationAssessmentForm: React.FC = () => {
     ]);
 
     const [quote, setQuote] = useState("");
-
-
-
 
 
 
@@ -129,7 +129,7 @@ const CommunicationAssessmentForm: React.FC = () => {
         } while (_tempQuotes.includes(randomIndex) && attempts < 100); // safety
 
         _tempQuotes.push(randomIndex);
-        setQuote(selfHelpQuotesTH[randomIndex].text);
+        setQuote(`${selfHelpQuotesTH[randomIndex].text} \n (${selfHelpQuotesTH[randomIndex].author})`);
         return randomIndex;
     };
 
@@ -144,7 +144,9 @@ const CommunicationAssessmentForm: React.FC = () => {
     }, [activeCategoryIndex]);
 
     useEffect(() => {
+
         const fetchReGStats = async () => {
+          
             const result: ReG[] = await getReGStats();
             // console.log(result)
 
@@ -184,6 +186,7 @@ const CommunicationAssessmentForm: React.FC = () => {
         }
 
         if (isSubmitted) {
+
             fetchReGStats();
         }
     }, [isSubmitted]);
@@ -271,6 +274,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        setIsReOpen(false);
         setActiveCategoryIndex(0)
         // Calculate scores
         const scores = calculateAssessmentScores(questions, answers);
@@ -344,7 +348,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
 
     return (
-        <div ref={QuestionRef} className=" max-w-4xl  bg-white md:p-12 rounded-lg my-10">
+        <div ref={QuestionRef} className=" max-w-4xl  lg:bg-white md:p-12 rounded-lg my-10">
             {!isSubmitted && <div className="">
                 <h2 className="text-3xl font-bold text-center mb-6 text-[#1a1a1a]">
                     มาดูกันว่า ทักษะคุยกับคนของคุณดีแค่ไหน?
@@ -480,7 +484,10 @@ const CommunicationAssessmentForm: React.FC = () => {
 
                 </form>
 
-                <QuickEvent trigger={trigger} onClose={() => { setTrigger(false); setClickedCount(0) }}>
+                <QuickEvent trigger={trigger} onClose={() => {
+                    setTrigger(false);
+                    setClickedCount(0)
+                }}>
                     <BubbleChat className='absolute z-10 mb-5' text={quote} />
 
                     <button
@@ -512,8 +519,9 @@ const CommunicationAssessmentForm: React.FC = () => {
                     <button className=' md:w-auto w-[90%] bubbly-button animate' onClick={async () => {
                         setTrigger(true)
                         if (UserInfo?.id) {
+
                             patchUserOverallStats(UserInfo.id, { xp: 50 })
-                            toast("You got 50 XP")
+                            toastSound("You got 50 XP", null, "/sfx/notify.mp3")
 
 
                             await addUserAchievement(UserInfo.id, {
@@ -523,16 +531,20 @@ const CommunicationAssessmentForm: React.FC = () => {
                             });
 
 
-                            toast("Achievement unlocked!", {
+                            const result = await toastSound("Achievement unlocked!", {
                                 description: overallPersona?.title
                             })
+                            if (result)
+                                setTimeout(() => {
+                                    window.location.href = "/learn";
+                                }, 3000);
                         } else {
                             toast.warning("Please login before! & Try again")
                             setOnLogin(true)
                         }
 
                     }}>
-                        <div className="btn-primary ">
+                        {!isReOpen && <div className="btn-primary ">
                             <div className="flex gap-2 items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                                     <path fill="none" stroke="currentColor" strokeDasharray={10} strokeDashoffset={10} strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12l-5 -5M15 12l-5 5">
@@ -541,7 +553,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                                 </svg>
                                 บันทึกความคืบหน้า
                             </div>
-                        </div>
+                        </div>}
                     </button>
                     <button className='md:basis-auto basis-1/2 px-4 py-2 flex justify-center  bg-white h-full m-0 hover:bg-zinc-400/10 transition rounded'
                         onClick={() => {

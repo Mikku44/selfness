@@ -160,8 +160,6 @@ export async function getPosts(
       posts.push({
         id: doc.id,
         ...data as Post,
-        created_at: data.created_at instanceof Timestamp ? data.created_at : undefined,
-        latest_update: data.latest_update instanceof Timestamp ? data.latest_update : undefined,
       });
     });
     console.log("POST : ",posts)
@@ -195,8 +193,8 @@ export function listenToPosts(
       posts.push({
         id: doc.id,
         ...data as Post,
-        created_at: data.created_at instanceof Timestamp ? data.created_at : undefined,
-        latest_update: data.latest_update instanceof Timestamp ? data.latest_update : undefined,
+        created_at: data.created_at instanceof Timestamp ? data.created_at : Timestamp.now(),
+        latest_update: data.latest_update instanceof Timestamp ? data.latest_update : Timestamp.now(),
       });
     });
     onUpdate(posts);

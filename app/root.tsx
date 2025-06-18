@@ -36,7 +36,7 @@ export async function loader() {
   return Response.json({
     ENV: {
       // PUBLIC_FIREBASE_API_KEY: process.env.PUBLIC_FIREBASE_API_KEY,
-      test:"TEST"
+      TEST:"TEST"
       // FAUNA_DB_URL: process.env.FAUNA_DB_URL,
     },
   });
@@ -76,7 +76,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           ></iframe>
         </noscript>
         <CookieConsent />
-        <Toaster position="top-center" closeButton richColors />
+        <Toaster className="md:hidden block" position="top-center" closeButton richColors />
+        <Toaster className="md:block hidden" richColors  />
         <AuthProvider>
           <AuthModal />
          
@@ -84,13 +85,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </AuthProvider>
           {/* {JSON.stringify(data.ENV)} */}
         <ScrollRestoration />
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(
               data.ENV
             )}`,
           }}
-        />
+        /> */}
         <Scripts />
       </body>
     </html>

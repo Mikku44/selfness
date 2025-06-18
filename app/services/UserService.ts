@@ -183,7 +183,7 @@ export async function patchUserOverallStats(id: string, updates: Partial<Overall
         gems: Math.max(0, (currentOverall.gems ?? 0) + (updates.gems ?? 0)),
         life: Math.max(0, (currentOverall.life ?? 0) + (updates.life ?? 0)),
         stack: Math.max(0, (currentOverall.stack ?? 0) + (updates.stack ?? 0)),
-        rank: getRankByXP(totalXP) ?? "Iron", // or your default
+        rank: getRankByXP(totalXP).name ?? "Iron", // or your default
       };
 
       transaction.update(userRef, { overall: newOverall });

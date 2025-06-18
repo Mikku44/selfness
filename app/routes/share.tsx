@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { domAnimation, LazyMotion, motion } from "framer-motion";
 import { deletePost, getPosts, incrementSupportCount, listenToPosts } from "~/services/PostsService";
 import { Post } from "~/Models/Post";
 import WritePost from "~/components/Feed/WritePost";
@@ -11,7 +11,7 @@ import { timeAgo } from "~/libs/DateFormat";
 import Overall from "~/components/game/Overall";
 import { toast } from "sonner";
 import { useLoaderData } from "@remix-run/react";
-import { getPostsServer } from "~/services/PostsService.server";
+import { getPostsServer } from "~/services/PostsServiceServer";
 
 export const meta: MetaFunction = () => {
     const title = 'Selfness Share Feed - โพสต์เลย! แบ่งปันทุกความรู้และทริคการพัฒนาตัวเอง';
@@ -50,42 +50,66 @@ export const meta: MetaFunction = () => {
 
 export async function loader() {
     const posts = await getPostsServer()
-    console.log("POST : ",posts)
-   
+    // console.log("POST : ",posts)
+
     return Response.json({
         postsServer: posts || []
     })
-    
+
 }
 
 
 export default function FeedPage() {
     const { postsServer } = useLoaderData<typeof loader>();
-    const [posts, setPosts] = useState<Post[]>(postsServer);
+    const [posts, setPosts] = useState<Post[]>([...postsServer]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [limitCount, setLimitCount] = useState(20);
 
-    // useEffect(() => {
-    //     // getPosts().then((posts) => console.log("POST CLINET :",posts))
-    //     const unsubscribe = listenToPosts({ limitCount: 20 }, (updatedPosts) => {
-    //         setPosts(updatedPosts);
-    //     });
+    useEffect(() => {
+        // getPosts().then((posts) => console.log("POST CLINET :",posts))
 
-    //     return () => unsubscribe(); // Clean up listener on unmount
-    // }, []);
+        const unsubscribe = listenToPosts({ limitCount: limitCount }, (updatedPosts) => {
+            setPosts(updatedPosts);
+            setIsLoading(false);
+        });
 
 
-    return (<div className="flex">
+        return () => unsubscribe(); // Clean up listener on unmount
+    }, [limitCount]);
+
+
+    return (<div className="flex ">
 
         <SideBar />
-        <main className="max-h-[100vh] w-full flex overflow-auto p-5 pb-20 bg-zinc-200/30">
-            <section className=" max-w-4xl w-full">
+        <main className="max-h-[100vh] w-full flex  overflow-auto p-5 bg-zinc-200/30">
+            <section className=" max-w-4xl w-full ">
                 <h1 className="text-2xl font-bold mb-6 ">Selfness Feed  </h1>
-                {postsServer ? JSON.stringify(postsServer) : "none"}
+                {/* {postsServer ? JSON.stringify(postsServer) : "none"} */}
                 <WritePost />
                 {posts ? posts.map((post: Post) => (
                     <PostCard key={post.id} post={post} />
                 ))
-                    : <div className="m-auto w-fit h-fit">Loading...</div>
+                    : isLoading ? <div className="m-auto w-fit h-fit">Loading...</div> : <div className="m-auto w-fit h-fit">No post avaiable...</div>
                 }
+                <motion.div
+                    onViewportEnter={() => {
+                        setLimitCount((prev: number) => prev + 20)
+                        setIsLoading(true)
+                    }}>
+
+                    <div className="flex jusity-center items-center py-5 ">{isLoading &&
+                        <div className="pb-10 grid gap-3 w-full">
+                            {[1, 2, 3, 4, 5, 6].map((item) => <div key={item} className="w-full h-fit bg-zinc-200/50 animate-pulse rounded-xl p-3 ">
+                                <div className="w-36 mb-2 h-[26px] bg-zinc-300 animate-pulse rounded-xl"></div>
+                                <div className="w-full h-[30px] bg-zinc-300 animate-pulse rounded-xl"></div>
+                                <div className="w-32 mt-2 h-[18px] bg-zinc-300 animate-pulse rounded-xl"></div>
+                            </div>)}
+                        </div>
+                    }</div>
+
+                </motion.div>
+
+                <div className="pb-5"></div>
             </section>
             <Overall />
         </main>
@@ -115,7 +139,7 @@ function PostCard({ post }: { post: Post }) {
                 <div className="flex justify-between items-center ">
                     <div className="flex items-center  gap-5">
                         <p className="font-semibold">{post.display_name}</p>
-                        {post.created_at && <p className="text-sm text-gray-500"> • {timeAgo(post.created_at?.toDate())}</p>}
+                        {/* {post?.created_at && <p className="text-sm text-gray-500"> • {timeAgo(post.created_at?.toDate())}</p>} */}
                     </div>
                     <div className="relative">
                         <button onClick={() => setMore(prev => !prev)} className="bg-white p-2 rounded-md hover:bg-zinc-200/30">
@@ -129,7 +153,7 @@ function PostCard({ post }: { post: Post }) {
                         </div>}
                     </div>
                 </div>
-                <p className="mt-2">{post.content}</p>
+                <p className="mt-2 text-lg mb-2">{post.content}</p>
                 {post.media && post.media.length > 0 && (
                     <div className="mt-2">
                         {post.media?.map((item) => {

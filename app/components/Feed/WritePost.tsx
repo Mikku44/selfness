@@ -8,7 +8,7 @@ import { useAuth } from "../Contexts/AuthContext";
 
 
 export default function WritePost() {
-    const {user} = useAuth()
+    const { user } = useAuth()
     const [form, setForm] = useState({
         display_name: user?.displayName || "",
         user_id: "", // Set this dynamically if auth is available
@@ -32,7 +32,7 @@ export default function WritePost() {
     function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (file) {
-            setMediaFiles((f:File[]) => [...f,file]);
+            setMediaFiles((f: File[]) => [...f, file]);
             const url = URL.createObjectURL(file);
             setPreview((prev: string[]) => [...prev, url]);
             setFileType(file.type.split("/")[0]); // 'image', 'video', 'audio', etc.
@@ -59,7 +59,7 @@ export default function WritePost() {
         let payload: Post = {
             display_name: form.display_name.trim(),
             user_id: form.user_id.trim() || "anonymous", // Fallback user ID
-            content: form.content.trim(),
+            content: form.content.trim().substring(0, 3000),
             media: null,
             tags: [],
         }
@@ -107,7 +107,7 @@ export default function WritePost() {
         }
     }
 
-    const LIMIT_TEXT: number | null = null;
+    const LIMIT_TEXT: number | null = 3000;
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 
@@ -139,45 +139,48 @@ export default function WritePost() {
                     type="text"
                     name="display_name"
                     placeholder="Display name"
-                    className="w-full px-3 py-2 "
+                    className="w-full px-3 py-2 rounded-xl border"
                     value={form.display_name}
                     onChange={handleChange}
                     required
                 />
-                <label htmlFor="" className="relative">
+                <label htmlFor="content" className="relative ">
                     <textarea
                         name="content"
+                        id="content"
                         placeholder="What is in your mind?"
-                        className="w-full px-3 py-2 min-h-[100px] max-h-[300px]"
+                        className="w-full px-3 py-2 min-h-[100px] max-h-[300px] mt-2 rounded-xl border"
                         rows={2}
                         value={form.content}
                         onChange={(el) => handleChange(el)}
                         required
                     />
-                    <div className="absolute right-0 bottom-14 px-2 text-sm">{form.content.length} </div>
-                    <div className="flex gap-2">
-                        {preview?.length > 0 && preview?.map((prev: string, index: number) =>
-                            <div className="mt-4 relative">
-                                {fileType === "image" && <img src={prev} alt="prev" className="max-w-xs rounded-xl" />}
-                                {fileType === "video" && <video src={prev} controls className="max-w-xs rounded" />}
-                                {fileType === "audio" && <audio src={prev} controls />}
-                                {fileType === "application" && (
-                                    <a href={prev} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                                        Preview file
-                                    </a>
-                                )}
-                                <div onClick={() => handleRemoveFile(index)} className="absolute top-0 right-0 rounded-full bg-black/80 text-white p-1 m-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
-                                        <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 6L6 18M6 6l12 12"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <div className="absolute right-0 bottom-0 px-2 mb-2 text-sm">{form.content.length} / {LIMIT_TEXT} </div>
 
-                    <section className="flex justify-between">
-                        <div className="flex gap-2 items-center">
-                            {/* <label htmlFor="file">
+                </label>
+                {preview?.length > 0 && <div className="flex gap-2">
+                    {preview?.map((prev: string, index: number) =>
+                        <div className="mt-4 relative">
+                            {fileType === "image" && <img src={prev} alt="prev" className="max-w-xs rounded-xl" />}
+                            {fileType === "video" && <video src={prev} controls className="max-w-xs rounded" />}
+                            {fileType === "audio" && <audio src={prev} controls />}
+                            {fileType === "application" && (
+                                <a href={prev} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                                    Preview file
+                                </a>
+                            )}
+                            <div onClick={() => handleRemoveFile(index)} className="absolute top-0 right-0 rounded-full bg-black/80 text-white p-1 m-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 6L6 18M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    )}
+                </div>}
+
+                <section className="flex justify-between">
+                    <div className="flex gap-2 items-center">
+                        {/* <label htmlFor="file">
                                 <input
                                     id="file"
                                     type="file"
@@ -231,16 +234,15 @@ export default function WritePost() {
                                 </svg>
                                 </div>
                             </label> */}
-                        </div>
-                        <button
-                            type="submit"
-                            disabled={(form.content.length <= 0)}
-                            className=" disabled:opacity-50"
-                        >
-                            <div className="btn-question">{loading ? "กำลังโพสต์..." : "โพสต์เลย"}</div>
-                        </button>
-                    </section>
-                </label>
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={(form.content.length <= 0)}
+                        className=" disabled:opacity-50"
+                    >
+                        <div className="btn-question">{loading ? "กำลังโพสต์..." : "โพสต์เลย"}</div>
+                    </button>
+                </section>
                 {error && <p className="text-red-600">{error}</p>}
             </form>
         </div>
