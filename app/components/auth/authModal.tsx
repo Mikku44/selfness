@@ -31,7 +31,7 @@ export default function AuthModal() {
       if (action === "login") {
         const result: any = await loginUser({ email, password });
         if (result?.errorCode) {
-          toast.error(`${result?.errorCode} : ${result?.errorMessage}`);
+          toast.error(` ${result?.errorMessage}`);
           return;
         } else {
           toast.success(`Login Succesfully!`);
@@ -40,7 +40,7 @@ export default function AuthModal() {
       } else {
         const result: any = await registerUser({ email, password, displayName });
         if (result?.errorCode) {
-          toast.error(`${result?.errorCode} : ${result?.errorMessage}`);
+          toast.error(` ${result?.errorMessage}`);
           return;
         } else {
           toast.success(`Register Succesfully!`);

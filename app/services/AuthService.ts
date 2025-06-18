@@ -3,10 +3,20 @@ import { auth } from "~/libs/firebase/auth.client";
 import { generateRandomUsername } from "~/libs/randomName";
 import { addOneUser } from "./UserService";
 import { createNewUser } from "~/Models/User";
+import { handleFirebaseError } from "~/libs/firebase/handleError";
 
 
-export async function registerUser({ email, password ,displayName}: { email: string; password: string ,displayName?:string}) {
+export async function registerUser({ email, password, displayName }: { email: string; password: string; displayName?: string }) {
     try {
+        // --- Email Validation ---
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return {
+                errorCode: "auth/invalid-email",
+                errorMessage: "Please enter a valid email address.",
+            };
+        }
+        // --- End Email Validation ---
+
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
@@ -18,15 +28,12 @@ export async function registerUser({ email, password ,displayName}: { email: str
 
         // Save to Firestore
         const newUser = createNewUser(user); // create from Firebase user
-        // console.log("REQ_RS_DATA : ",newUser)
         await addOneUser(newUser); // store in Firestore
 
         return user;
     } catch (error: any) {
-        return {
-            errorCode: error.code,
-            errorMessage: error.message,
-        };
+
+        return handleFirebaseError(error);
     }
 }
 
@@ -39,16 +46,11 @@ export async function loginUser({ email, password }: { email: string, password: 
                 await updateUser({ displayName: generateRandomUsername() })
             }
 
-            
+
             return user
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return {
-                errorCode,
-                errorMessage
-            }
+            return handleFirebaseError(error);
         });
 
 }
@@ -77,12 +79,7 @@ export async function updateUser(updatedUser: { displayName?: string, photoURL?:
         return updateProfile(auth.currentUser, updatedUser).then(() => {
             return true
         }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return {
-                errorCode,
-                errorMessage
-            }
+            return handleFirebaseError(error);
         });
     } else {
         return {

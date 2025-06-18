@@ -57,7 +57,7 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <div className="">
-      <div className="flex bg-white hidden-scrollbar element justify-start md:justify-between rounded-lg overflow-x-scroll  py-4 px-4">
+      <div className="flex bg-white hidden-scrollbar element justify-start md:justify-between rounded-lg overflow-x-scroll  py-4 ">
         {weekDates.map((date, index) => {
           const isCurrentDay = isSelected(date);
           const isTodayDate = isToday(date);
@@ -66,7 +66,7 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
             <div
               key={index}
               onClick={() => handleDateClick(date)}
-              className={`flex group rounded-lg mx-1 transition-all duration-300 cursor-pointer justify-center w-20 relative ${
+              className={`flex group rounded-lg transition-all duration-300 cursor-pointer justify-center w-20 relative ${
                 isCurrentDay
                   ? isDarkVariant
                     ? 'bg-purple-600 shadow-lg'

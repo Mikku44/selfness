@@ -34,7 +34,7 @@ import { toast } from 'sonner';
 const CommunicationAssessmentForm: React.FC = () => {
     // Define your questions based on the categories discussed
 
-    const { UserInfo } = useAuth()
+    const { UserInfo, setOnLogin } = useAuth()
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [trigger, setTrigger] = useState(true);
@@ -65,10 +65,7 @@ const CommunicationAssessmentForm: React.FC = () => {
     const [quote, setQuote] = useState("");
 
 
-    const randomQuote = () => {
-        const randomIndex = Math.floor(Math.random() * selfHelpQuotesTH.length);
-        setQuote(selfHelpQuotesTH[randomIndex].text);
-    }
+
 
 
 
@@ -116,10 +113,33 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     }, [activeCategoryIndex, trigger]);
 
+    let _tempLastIndex: number = 0;
+    let _tempQuotes: Array<number> = [];
+
+    const randomQuote = () => {
+        if (_tempQuotes.length >= selfHelpQuotesTH.length) {
+            _tempQuotes = [];
+        }
+
+        let randomIndex: number;
+        let attempts = 0;
+        do {
+            randomIndex = Math.floor(Math.random() * selfHelpQuotesTH.length);
+            attempts++;
+        } while (_tempQuotes.includes(randomIndex) && attempts < 100); // safety
+
+        _tempQuotes.push(randomIndex);
+        setQuote(selfHelpQuotesTH[randomIndex].text);
+        return randomIndex;
+    };
+
     useEffect(() => {
         if (activeCategoryIndex > 0) {
-            randomQuote()
-            setTrigger(true)
+            if (_tempLastIndex < activeCategoryIndex) {
+                randomQuote()
+                setTrigger(true)
+                _tempLastIndex = activeCategoryIndex;
+            }
         }
     }, [activeCategoryIndex]);
 
@@ -251,6 +271,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        setActiveCategoryIndex(0)
         // Calculate scores
         const scores = calculateAssessmentScores(questions, answers);
         // const overallScore = calculateOverallScore(scores); // Calculate overall score
@@ -417,14 +438,28 @@ const CommunicationAssessmentForm: React.FC = () => {
                             </Click>
                         )}
                         {activeCategoryIndex < categoryNames.length - 1 && (
-                            <Click
-                                onClick={() => {
+                            <>
+                                <Click
+                                    onClick={() => {
 
-                                    setActiveCategoryIndex(activeCategoryIndex + 1)
-                                }}
-                            >
-                                <div className="btn-primary">ไปยังหมวดถัดไป</div>
-                            </Click>
+                                        setActiveCategoryIndex(activeCategoryIndex + 1)
+                                    }}
+                                >
+                                    <div className="btn-primary">ไปยังหมวดถัดไป</div>
+                                </Click>
+                                {allQuestionsAnswered && <div className="">
+                                    <Click
+                                        type="submit"
+                                        soundSrc='/sfx/start.mp3'
+                                        // disabled={!allQuestionsAnswered}
+                                        className={` ${allQuestionsAnswered ? "bg-black" : "bg-gray-500"} overflow-visible`}
+                                        animate={true}
+                                    >
+                                        <div className={`${allQuestionsAnswered ? "btn-primary shadow-md" : "btn-disabled "}`}>ส่งแบบสำรวจ</div>
+                                    </Click>
+                                </div>}
+                            </>
+
                         )}
 
                         {activeCategoryIndex == categoryNames.length - 1 &&
@@ -468,24 +503,7 @@ const CommunicationAssessmentForm: React.FC = () => {
 
                 {/* Display the overall persona flashcard first */}
                 <div className="relative">
-                    <QuickEvent trigger={trigger} onClose={() => { setTrigger(false); setClickedCount(0) }}>
-                        <BubbleChat className='absolute z-10 mb-5' text='คลิกย้ำๆ เพื่อเล่นต่อ!' />
-                        {/* <HoldToContinueButton
-                            onComplete={() => {
-                                setTrigger(false)
-                                // alert("Let's go")
-                            }}
-                            holdDuration={200}
-                        /> */}
-                        <TextEffect clickedCount={clickedCount} />
-                        <button
-                            onClick={(e) => {
-                                setClickedCount(prev => prev + 1)
-                            }}
-                            className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
-                            <span className='btn-question duration-100 '>เพิ่มพลัง</span>
-                        </button>
-                    </QuickEvent>
+
                     <BubbleChat className='absolute z-10 left-[40%] animate-bounce' text='คลิกเพื่อเปิดดูการ์ด!' />
                     {overallPersona && <FlashcardPersona persona={overallPersona} />}
                 </div>
@@ -508,8 +526,10 @@ const CommunicationAssessmentForm: React.FC = () => {
                             toast("Achievement unlocked!", {
                                 description: overallPersona?.title
                             })
+                        } else {
+                            toast.warning("Please login before! & Try again")
+                            setOnLogin(true)
                         }
-                        toast.warning("Please login before!")
 
                     }}>
                         <div className="btn-primary ">

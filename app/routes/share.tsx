@@ -1,5 +1,5 @@
-import { useFetcher } from "@remix-run/react";
-import { deletePost, incrementSupportCount, listenToPosts } from "~/services/PostsService";
+import { motion } from "framer-motion";
+import { deletePost, getPosts, incrementSupportCount, listenToPosts } from "~/services/PostsService";
 import { Post } from "~/Models/Post";
 import WritePost from "~/components/Feed/WritePost";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +9,9 @@ import '~/css/bubble.css';
 import { formatNumberShort } from "~/libs/NumberFormat";
 import { timeAgo } from "~/libs/DateFormat";
 import Overall from "~/components/game/Overall";
+import { toast } from "sonner";
+import { useLoaderData } from "@remix-run/react";
+import { getPostsServer } from "~/services/PostsService.server";
 
 export const meta: MetaFunction = () => {
     const title = 'Selfness Share Feed - โพสต์เลย! แบ่งปันทุกความรู้และทริคการพัฒนาตัวเอง';
@@ -45,20 +48,29 @@ export const meta: MetaFunction = () => {
     ];
 };
 
+export async function loader() {
+    const posts = await getPostsServer()
+    console.log("POST : ",posts)
+   
+    return Response.json({
+        postsServer: posts || []
+    })
+    
+}
+
 
 export default function FeedPage() {
-    // const { posts } = useLoaderData<typeof loader>();
-    const [posts, setPosts] = useState<Post[]>();
+    const { postsServer } = useLoaderData<typeof loader>();
+    const [posts, setPosts] = useState<Post[]>(postsServer);
 
-    useEffect(() => {
-        const unsubscribe = listenToPosts({ limitCount: 20 }, (updatedPosts) => {
-            setPosts(updatedPosts);
-        });
+    // useEffect(() => {
+    //     // getPosts().then((posts) => console.log("POST CLINET :",posts))
+    //     const unsubscribe = listenToPosts({ limitCount: 20 }, (updatedPosts) => {
+    //         setPosts(updatedPosts);
+    //     });
 
-        return () => unsubscribe(); // Clean up listener on unmount
-    }, []);
-
-
+    //     return () => unsubscribe(); // Clean up listener on unmount
+    // }, []);
 
 
     return (<div className="flex">
@@ -66,7 +78,8 @@ export default function FeedPage() {
         <SideBar />
         <main className="max-h-[100vh] w-full flex overflow-auto p-5 pb-20 bg-zinc-200/30">
             <section className=" max-w-4xl w-full">
-                <h1 className="text-2xl font-bold mb-6 ">Selfness Feed</h1>
+                <h1 className="text-2xl font-bold mb-6 ">Selfness Feed  </h1>
+                {postsServer ? JSON.stringify(postsServer) : "none"}
                 <WritePost />
                 {posts ? posts.map((post: Post) => (
                     <PostCard key={post.id} post={post} />
@@ -90,10 +103,10 @@ function PostCard({ post }: { post: Post }) {
         try {
             if (post.id) {
                 const result = await deletePost(post.id)
-                if (result) alert("Successfully")
+                if (result) toast("Successfully")
             }
         } catch (error: any) {
-            alert(`ERROR ${error?.message}`)
+            toast(`ERROR ${error?.message}`)
         }
     }
     return (
@@ -183,9 +196,19 @@ function ClickCounter({ value = 0, id }: Readonly<{ value: number | undefined, i
         >
             <div className=" ">
                 <div className=" flex gap-2 items-center">
-                    {<svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} viewBox="0 0 24 24" className="fill-none active:scale-105  bg-white p-1 hover:bg-zinc-300/20 rounded-md group-active:fill-yellow-500 group-active:text-indigo-500 group-focus:fill-yellow-500">
+                    {<motion.svg
+                        whileTap={{
+                            scale: 0.85, // Shrink slightly when tapped
+                            transition: {
+                                type: "spring", // Use a spring physics animation
+                                stiffness: 1000, // How stiff the spring is (higher = faster)
+                                damping: 1     // How much friction is applied (lower = bouncier)
+                            }
+
+                        }}
+                        xmlns="http://www.w3.org/2000/svg" width={32} height={32} viewBox="0 0 24 24" className="fill-none active:scale-105  bg-white p-1 hover:bg-zinc-300/20 rounded-md group-active:fill-yellow-500 group-active:text-indigo-500 group-focus:fill-yellow-500">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5h2M5 4v2m6.5-2L11 6m7-1h2m-1-1v2m-4 3l-1 1m4 3l2-.5M18 19h2m-1-1v2m-5-3.482L7.482 10l-4.39 9.58a1 1 0 0 0 1.329 1.329z"></path>
-                    </svg>}
+                    </motion.svg>}
                     <div className="relative">
                         {formatNumberShort(value + count)}
                         <div className=" group-active:opacity-100 opacity-0 absolute duration-300 top-[-15px] group-active:animate-ping text-[var(--secondary-color)]">+1</div>

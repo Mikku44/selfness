@@ -1,5 +1,6 @@
 import { MetaFunction } from '@remix-run/react';
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner';
 import { useAuth } from '~/components/Contexts/AuthContext';
 import ProgressBar from '~/components/ProgressBar';
 import SideBar from '~/components/SideBar'
@@ -48,6 +49,8 @@ export default function profile() {
     // const [UserInfo, setUserInfo] = useState<User | null>(null);
 
     const { user, UserInfo, setOnLogin } = useAuth();
+
+
     // const fetchUser = async () => {
     //     if (user) {
     //         const userInfo = await getUserByUid(user.uid)
@@ -85,13 +88,13 @@ export default function profile() {
                                 </div>
                             </div>}
                             {/* Dailay Practice */}
-                           {UserInfo &&  <div className="card-box ">
+                            {UserInfo && <div className="card-box ">
                                 <div className="text-lg text-zinc-600">ภารกิจประจำวัน! </div>
                                 <div className="flex gap-2 items-center ">
                                     <iframe className="size-12 inline" src="https://lottie.host/embed/b2e63c21-bb0e-49b6-b3f7-2cc96865143e/e9dNlFWP77.lottie"></iframe>
                                     <div className="w-full">
                                         <div className="text-md text-zinc-600  mb-1">สะสมให้ครบ EXP!</div>
-                                        
+
                                         <ProgressBar progress={UserInfo?.overall?.xp || 0} maxProgress={400} showLabel={false} fillColor={"bg-[var(--primary-color)]"} />
                                     </div>
                                 </div>
@@ -139,6 +142,15 @@ export default function profile() {
 
 
 function ProfilePage({ user }: { user: User }) {
+    const handleLogout = async () => {
+        const result = await signOutUser();
+        if (result) {
+            toast.success("Logged out!")
+        } else {
+            toast.error("Something went wrong please, try again later!")
+        }
+        window.location.reload();
+    }
     return (
         <div className="mx-auto mt-10 p-6 rounded-xl shadow-md bg-white space-y-4">
             {/* Profile Image */}
@@ -199,9 +211,9 @@ function ProfilePage({ user }: { user: User }) {
                 )}
             </div>
             <div className="">
-                <button 
-                className='bg-[var(--secondary-color)] w-full'
-                onClick={() => signOutUser()}>
+                <button
+                    className='bg-[var(--secondary-color)] w-full'
+                    onClick={() => handleLogout()}>
                     <div className="btn-question-active">Logout</div>
                 </button>
             </div>

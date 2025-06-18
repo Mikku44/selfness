@@ -4,6 +4,7 @@ import { ReG } from "~/Models/Registration";
 import { createNewUser, OverallStats, User, UserAchievement, UserHistoryEvent } from "~/Models/User";
 import type { User as FirebaseUser, Unsubscribe } from "firebase/auth";
 import { SubscriptionPlan } from "~/Models/SubscriptionPlan";
+import getRankByXP from "~/libs/ranks";
 
 const DOCUMENT_NAME = "Users";
 
@@ -175,12 +176,14 @@ export async function patchUserOverallStats(id: string, updates: Partial<Overall
 
       const currentOverall = userDoc.data().overall || {};
 
+      
+      const totalXP = Math.max(0, (currentOverall.xp ?? 0) + (updates.xp ?? 0))
       const newOverall: OverallStats = {
-        xp: Math.max(0, (currentOverall.xp ?? 0) + (updates.xp ?? 0)),
+        xp: totalXP,
         gems: Math.max(0, (currentOverall.gems ?? 0) + (updates.gems ?? 0)),
         life: Math.max(0, (currentOverall.life ?? 0) + (updates.life ?? 0)),
         stack: Math.max(0, (currentOverall.stack ?? 0) + (updates.stack ?? 0)),
-        rank: updates.rank ?? currentOverall.rank ?? "Iron", // or your default
+        rank: getRankByXP(totalXP) ?? "Iron", // or your default
       };
 
       transaction.update(userRef, { overall: newOverall });

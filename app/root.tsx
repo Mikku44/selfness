@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 
@@ -31,7 +32,21 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export async function loader() {
+  return Response.json({
+    ENV: {
+      // PUBLIC_FIREBASE_API_KEY: process.env.PUBLIC_FIREBASE_API_KEY,
+      test:"TEST"
+      // FAUNA_DB_URL: process.env.FAUNA_DB_URL,
+    },
+  });
+}
+
+
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <html lang="th">
       <head>
@@ -61,13 +76,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
           ></iframe>
         </noscript>
         <CookieConsent />
-        <Toaster position="top-center" closeButton richColors/>
+        <Toaster position="top-center" closeButton richColors />
         <AuthProvider>
           <AuthModal />
+         
           {children}
         </AuthProvider>
-
+          {/* {JSON.stringify(data.ENV)} */}
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(
+              data.ENV
+            )}`,
+          }}
+        />
         <Scripts />
       </body>
     </html>

@@ -15,20 +15,22 @@ export const meta: MetaFunction = () => {
 
 export default function _questions() {
 
-  return (
-    <div className="flex ">
+  return <CommunicationAssessmentForm />
+  
+  // (
+  //   <div className="flex ">
 
-      <SideBar />
-      <main className=" flex max-h-[100vh] pb-10 w-full overflow-auto p-5">
-        <section className="min-h-[150vh] ">
+  //     <SideBar />
+  //     <main className=" flex max-h-[100vh] pb-10 w-full overflow-auto p-5">
+  //       <section className="min-h-[150vh] ">
           
-          <CommunicationAssessmentForm />
-        </section>
-        <Overall />
-      </main>
+  //         <CommunicationAssessmentForm />
+  //       </section>
+  //       <Overall />
+  //     </main>
       
-    </div>
+  //   </div>
 
 
-  )
+  // )
 }
