@@ -26,6 +26,7 @@ import { addUserAchievement, patchUserOverallStats } from '~/services/UserServic
 import { useAuth } from './Contexts/AuthContext';
 import { toast } from 'sonner';
 import { toastSound } from './game/toastSound';
+import LottieWeb from './lotties/LottieWeb';
 
 
 
@@ -146,7 +147,7 @@ const CommunicationAssessmentForm: React.FC = () => {
     useEffect(() => {
 
         const fetchReGStats = async () => {
-          
+
             const result: ReG[] = await getReGStats();
             // console.log(result)
 
@@ -362,7 +363,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                     index: activeCategoryIndex + 1,
                     length: categoryNames.length
                 }} className="mb-4 bg-white px-5 pt-5 pb-2 shadow rounded-2xl sticky top-0 z-10 " />
-                <form onSubmit={handleSubmit} className="space-y-10">
+                <form onSubmit={handleSubmit} className="space-y-10 pb-20">
                     {Object.entries(groupedQuestions).map(([category, categoryQuestions], index) => {
                         if (index === activeCategoryIndex)
                             return (
@@ -484,19 +485,31 @@ const CommunicationAssessmentForm: React.FC = () => {
 
                 </form>
 
-                <QuickEvent trigger={trigger} onClose={() => {
+                <QuickEvent
+
+                trigger={trigger} 
+                onClose={() => {
                     setTrigger(false);
                     setClickedCount(0)
                 }}>
-                    <BubbleChat className='absolute z-10 mb-5' text={quote} />
-
-                    <button
-                        onClick={(e) => {
-                            setTrigger(false)
-                        }}
-                        className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
-                        <span className='btn-question duration-100 '>ดำเนินการต่อ</span>
-                    </button>
+                    <div className="relative">
+                        <BubbleChat className='absolute z-10 mb-5' text={quote} />
+                        <button
+                            onClick={(e) => {
+                                setTrigger(false)
+                            }}
+                            className='bg-[var(--primary-color)] group text-[var(--primary-color)]'>
+                            <span className='btn-question duration-100 '>ดำเนินการต่อ</span>
+                        </button>
+                        {activeCategoryIndex === 2 && <div className='absolute mx-auto w-full '>
+                            <div className="text-2xl text-white mt-5">ผ่านมาครึ่งทางแล้ว ลุยกันต่อ!</div>
+                            <div className="flex justify-center">
+                                <LottieWeb
+                                    className="w-[200px] mt-5"
+                                    src="https://lottie.host/0dec50ed-2b1e-4378-ad6e-fa656a946f73/XqaSC4PSiJ.lottie" />
+                            </div>
+                        </div>}
+                    </div>
                 </QuickEvent>
             </div>}
 

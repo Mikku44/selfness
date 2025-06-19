@@ -46,6 +46,9 @@
 --quinary-color-medium: #7de3bc; /* added */
 --quinary-color-light: rgb(181, 247, 214);
 
+
+--rotate3d : rotateX(34deg) translate3d(-33px, -19px, -4px);
+
 }
 
 html {
@@ -315,6 +318,21 @@ button:active .btn-question {
   height: 5px;
   width: 100%;
 }
+
+.wrap-original-transform {
+  perspective: 72px;
+  transform-style: preserve-3d;
+}
+
+.original-transform {
+  transform-origin: 45% 50%;
+  transform: rotateX(34deg) rotateZ(-17deg) translate3d(-33px, -19px, -4px) skewX(11deg);
+}
+
+.rotate3d {
+  @apply wrap-original-transform original-transform;
+}
+
 
 
 

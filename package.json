@@ -18,6 +18,7 @@
     "@capacitor/core": "^7.2.0",
     "@capacitor/ios": "^7.3.0",
     "@lottiefiles/dotlottie-react": "^0.14.1",
+    "@lottiefiles/dotlottie-web": "^0.46.0",
     "@remix-run/node": "^2.16.7",
     "@remix-run/react": "^2.16.7",
     "@remix-run/serve": "^2.16.7",

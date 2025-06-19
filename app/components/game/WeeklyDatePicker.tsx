@@ -66,14 +66,14 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
             <div
               key={index}
               onClick={() => handleDateClick(date)}
-              className={`flex group rounded-lg transition-all duration-300 cursor-pointer justify-center w-20 relative ${
+              className={`flex group  rounded-lg transition-all duration-300 cursor-pointer justify-center w-20 relative ${
                 isCurrentDay
                   ? isDarkVariant
-                    ? 'bg-purple-600 shadow-lg'
-                    : 'bg-[--quinary-color-light] shadow-lg'
+                    ? 'bg-purple-600 shadow-lg '
+                    : 'bg-[--quinary-color-light] shadow-lg '
                   : isDarkVariant
-                  ? 'hover:bg-purple-500 hover:shadow-lg'
-                  : 'hover:border-[--quinary-color-light] border-2 hover:shadow-lg'
+                  ? 'hover:bg-purple-500 hover:shadow-lg '
+                  : 'hover:border-[--quinary-color-light] border-2 hover:shadow-lg bg-white'
               }`}
             >
             

@@ -4,7 +4,7 @@ import Footer from "~/components/Footer";
 import Header from "~/components/Header";
 import StatsDisplay from "~/components/StatsDisplay";
 
-import { loader as firebaseLoader } from "~/libs/firebase/firebase.server"; 
+// import { loader as firebaseLoader } from "~/libs/firebase/firebase.server"; 
 
 
 export const meta: MetaFunction = () => {
@@ -41,7 +41,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = firebaseLoader;
+// export const loader = firebaseLoader;
 
 
 export default function Index() {
