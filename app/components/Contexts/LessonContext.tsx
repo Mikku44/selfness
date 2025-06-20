@@ -5,9 +5,8 @@ import { createContext, Dispatch, SetStateAction, useContext, useEffect, useStat
 type LessonContextType = {
 
     loading: boolean;
-    lessonID: string;
-
-    setSetlessonID: Dispatch<SetStateAction<string>>
+    lessonIndex: number;
+    setSetlessonIndex: Dispatch<SetStateAction<number>>
     setLoading: Dispatch<SetStateAction<boolean>>
 
 };
@@ -16,8 +15,20 @@ const LessonContext = createContext<LessonContextType | undefined>(undefined);
 
 export function LessonProvider({ children }: { children: React.ReactNode }) {
 
-    const [loading, setLoading] = useState(true);
-    const [lessonID, setSetlessonID] = useState("");
+    const [loading, setLoading] = useState<boolean>(true);
+    const [lessonIndex, setSetlessonIndex] = useState<number>(() => {
+        // Load saved index or default to 0
+        let saved : number | string | null = 0;
+        if (typeof window !== "undefined") {
+             saved = localStorage.getItem("lessonIndex");
+        }
+            return saved ? parseInt(saved as string, 10) : 0;
+        });
+
+
+    useEffect(() => {
+        localStorage.setItem("lessonIndex", lessonIndex.toString());
+    }, [lessonIndex]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -30,9 +41,9 @@ export function LessonProvider({ children }: { children: React.ReactNode }) {
     return (
         <LessonContext.Provider value={{
             loading,
-            setSetlessonID,
+            setSetlessonIndex,
+            lessonIndex,
             setLoading,
-            lessonID
         }}>
             {children}
         </LessonContext.Provider>

@@ -375,6 +375,7 @@ const CommunicationAssessmentForm: React.FC = () => {
                                         {categoryQuestions.map((q) => (
                                             <div key={q.id} className="bg-gray-50 p-6 rounded-md shadow-sm">
                                                 <p className="text-lg font-medium mb-4 text-gray-800">{q.text}</p>
+                                                
                                                 {q.type === 'rating'
                                                     && (
                                                         <div className="flex justify-between items-center text-gray-700 text-sm">

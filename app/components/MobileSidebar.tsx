@@ -31,7 +31,10 @@ export default function MobileBottomNav() {
     <nav className="fixed bottom-0 left-0 w-full bg-white border-t shadow-md z-50 md:hidden">
       <ul className="flex justify-around items-center">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.to;
+          const isActive =
+            item.to === "learn"
+              ? ["learn", "lesson"].some((path) => location.pathname.includes(path))
+              : location.pathname === item.to;
           return (
             <li key={item.to}>
               <Link
