@@ -58,6 +58,13 @@ export default function SideBar() {
                         </Link>
                     </li>*/}
                     <li>
+                        <Link to="/shop" className="flex items-center gap-2 py-2 px-3 rounded hover:bg-zinc-50 transition-colors">
+                         <img src="/icons/sharefeed.png" alt="shop icon" 
+                         className="size-5"/>
+                            Shop
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/profile" className="flex items-center gap-2 py-2 px-3 rounded hover:bg-zinc-50 transition-colors">
                          <img src="/icons/profile.png" alt="profile icon" 
                          className="size-5"/>

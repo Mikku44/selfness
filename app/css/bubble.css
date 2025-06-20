@@ -15,7 +15,7 @@
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(255, 191, 0, 0.988);
+  box-shadow: 0 2px 32px rgba(255, 191, 0, 0.988);
 }
 
 .bubbly-button:focus {
@@ -35,9 +35,40 @@
   background-repeat: no-repeat;
 }
 
+.bubbly-button {
+  position: relative; /* Needed for absolute positioning of ::before/::after */
+  /* overflow: hidden;   Ensures bubbles don't go outside the button */
+  /* Add your base button styles here (e.g., width, height, padding, background, border, etc.) */
+  /* padding: 1em 2em; */
+  /* background-color: #ff0081; */
+  color: white;
+  /* border-radius: 40px; */
+  border: 1px solid black;
+  font-size: 1.2em;
+  cursor: pointer;
+  z-index: 1; /* Make sure content is above bubbles */
+}
+
+
+.bubbly-button:before,
+.bubbly-button:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Place behind the button content */
+  pointer-events: none; /* Allows clicks to pass through */
+  background-repeat: no-repeat; /* Ensure individual bubbles */
+  /* Remove initial display: none; from here, let the .animate class handle it */
+  display: none; /* Keep this to hide by default */
+}
+
+/* Adjust top/bottom positioning for pseudo-elements */
 .bubbly-button:before {
-  display: none;
-  top: -75%;
+  top: -75%; /* Start above the button */
+  /* Updated background-size with fixed units and matching count */
   background-image:
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, transparent 20%, rgba(255, 191, 0, 0.988) 20%, transparent 30%),
@@ -48,12 +79,14 @@
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+  /* All values below are WxH for each bubble, ensuring they are squares */
+  background-size: 40px 40px, 35px 35px, 32px 32px, 40px 40px, 28px 28px, 25px 25px, 32px 32px, 25px 25px, 28px 28px;
+  /* You'll need to adjust the initial background-position if these smaller bubbles need to start very far away */
 }
 
 .bubbly-button:after {
-  display: none;
-  bottom: -75%;
+  bottom: -75%; /* Start below the button */
+  /* Updated background-size with fixed units and matching count */
   background-image:
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
@@ -62,53 +95,61 @@
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%),
     radial-gradient(circle, rgba(255, 191, 0, 0.988) 20%, transparent 20%);
-  background-size: 30% 30%, 20% 20%, 18% 18%, 20% 20%, 30% 30%, 15% 15%, 20% 20%;
+  /* All values below are WxH for each bubble, ensuring they are squares */
+  background-size: 40px 40px, 35px 35px, 28px 28px, 35px 35px, 40px 40px, 32px 32px, 35px 35px;
 }
 
 .bubbly-button:active {
   transform: scale(0.9);
   /* background-color: #e60073; */
-  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+  box-shadow: 0 2px 32px rgba(255, 0, 130, 0.2);
 }
 
 .bubbly-button.animate:before {
-  display: block;
+  display: block; /* Make sure they are visible during animation */
   animation: topBubbles cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s infinite;
 }
 
 .bubbly-button.animate:after {
-  display: block;
+  display: block; /* Make sure they are visible during animation */
   animation: bottomBubbles cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s infinite;
 }
 
 @keyframes topBubbles {
   0% {
     background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+    /* At 0%, keep background-size to the fixed values from .bubbly-button:before */
+    background-size: 40px 40px, 35px 35px, 32px 32px, 40px 40px, 28px 28px, 25px 25px, 32px 32px, 25px 25px, 28px 28px;
   }
   50% {
     background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+    /* At 50%, keep background-size to the fixed values */
+    background-size: 40px 40px, 35px 35px, 32px 32px, 40px 40px, 28px 28px, 25px 25px, 32px 32px, 25px 25px, 28px 28px;
   }
   100% {
     background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    /* Here you want them to disappear, so set size to 0% 0% or 0px 0px */
+    background-size: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
   }
 }
 
 @keyframes bottomBubbles {
   0% {
     background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+    /* At 0%, keep background-size to the fixed values from .bubbly-button:after */
+    background-size: 40px 40px, 35px 35px, 28px 28px, 35px 35px, 40px 40px, 32px 32px, 35px 35px;
   }
   50% {
     background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+    /* At 50%, keep background-size to the fixed values */
+    background-size: 40px 40px, 35px 35px, 28px 28px, 35px 35px, 40px 40px, 32px 32px, 35px 35px;
   }
   100% {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    /* Here you want them to disappear, so set size to 0% 0% or 0px 0px */
+    background-size: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
   }
 }
-
-
-
 
 .btn-bubble {
   display: inline-block;

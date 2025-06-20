@@ -7,7 +7,8 @@ import SideBar from '~/components/SideBar'
 import getRankByXP, { nextRank } from '~/libs/ranks';
 import { User } from '~/Models/User';
 import { signOutUser } from '~/services/AuthService';
-
+import SVG from 'react-inlinesvg';
+import ButtonShop from '~/components/ButtonShop';
 
 
 export const meta: MetaFunction = () => {
@@ -84,7 +85,14 @@ export default function profile() {
                                     <div className="">{UserInfo?.overall?.life || 0}</div>
                                 </div>
                                 <div className="flex gap-1 font-bold items-center cursor-default hover:bg-zinc-100 rounded-md w-fit px-2 py-1">
-                                    <img src="/icons/gem.svg" alt="gem" className="size-5" />
+                                    {/* <img src="/icons/gem.svg" alt="gem" className="size-5" /> */}
+                                    <SVG
+                                        className="size-5"
+                                        src="/icons/gem.svg"
+                                        width={18}
+                                        height="auto"
+                                        title="gem"
+                                    />
                                     <div className="">{UserInfo?.overall?.gems || 0}</div>
                                 </div>
                             </div>}
@@ -211,11 +219,16 @@ function ProfilePage({ user }: { user: User }) {
                 )}
             </div>
             <div className="">
-                <button
+                {/* <button
                     className='bg-[var(--secondary-color)] w-full'
                     onClick={() => handleLogout()}>
                     <div className="btn-question-active">Logout</div>
-                </button>
+                </button> */}
+                <ButtonShop
+                    className="w-full"
+                    onClick={() => handleLogout()}
+                    text="Log out"
+                ></ButtonShop>
             </div>
 
 

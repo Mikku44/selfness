@@ -1,7 +1,8 @@
 # Step 1: Build
 FROM node:20 AS builder
 WORKDIR /app
-COPY . .
+COPY . .  
+# This copies .env if it's in your Docker build context
 RUN npm install
 RUN npm run build
 
@@ -9,7 +10,6 @@ RUN npm run build
 FROM node:20 AS runner
 WORKDIR /app
 COPY --from=builder /app ./
-# Fix for the "LegacyKeyValueFormat" warning:
-# Changed 'ENV NODE_ENV production' to 'ENV NODE_ENV=production'
+ # This copies the .env from the builder stage
 ENV NODE_ENV=production
 CMD ["npm", "start"]

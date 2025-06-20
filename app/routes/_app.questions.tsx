@@ -1,8 +1,6 @@
 import { MetaFunction } from "@remix-run/react";
 import CommunicationAssessmentForm from "~/components/Form";
-import Overall from "~/components/game/Overall";
 
-import SideBar from "~/components/SideBar";
 
 
 export const meta: MetaFunction = () => {

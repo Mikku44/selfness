@@ -21,7 +21,7 @@ export default function BubbleChat({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay, duration: 0.1, ease: 'easeOut' }}
                 exit={{ opacity: 0, y: 20 }}
-                onClick={()=> setIsHidden(true)}
+                // onClick={()=> setIsHidden(true)}
             >
                 {text}
             </motion.div>

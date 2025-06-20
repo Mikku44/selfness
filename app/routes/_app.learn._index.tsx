@@ -10,11 +10,7 @@ export const meta: MetaFunction = () => {
 };
 
 
-export default function _questions() {
+export default function _learn() {
 
-    return (
-        <DailyPractice></DailyPractice>
-
-
-    )
+    return <DailyPractice />
 }

@@ -1,6 +1,8 @@
 export const lessonMindset = [
     {
+        category: "mindset",
         lesson: "ขั้นที่ 1: เข้าใจตัวเองและต้นตอของความกลัว",
+        note: "คำถามเชื่อมต่อจากข้อก่อนหน้า",
         steps: [
             {
                 id: "q1_1",
@@ -41,41 +43,47 @@ export const lessonMindset = [
                 id: "q1_4",
                 text: "ถ้าเพื่อนรักรู้สึกแบบนั้น คุณจะพูดกับเขาว่าอะไร?",
                 type: 'text-answer',
-                
+
             },
             {
                 id: "q1_5",
                 text: "จบภารกิจวันนี้ด้วยการตั้งเป้าเล็กๆ “ครั้งหน้าฉันจะลอง...”",
                 type: 'multiple-choice',
-                 options: [
+                options: [
                     { value: '0', label: 'ทักเพื่อนก่อน' },
                     { value: '1', label: 'ยิ้มให้คนแปลกหน้า' },
                     { value: '2', label: 'อยู่ในกลุ่มโดยไม่รีบเดินหนี' },
                     { value: 'input', label: 'other' },
                 ]
-                
+
             },
         ]
 
     },
     {
+        category: "mindset",
         lesson: "ขั้นที่ 2: สร้างกรอบความคิดใหม่ (Reframe Mindset)",
 
     },
     {
+        category: "mindset",
         lesson: "ขั้นที่ 3: ฝึกการสื่อสารกับตัวเอง (Self-Confidence)",
 
     },
     {
+        category: "mindset",
         lesson: "ขั้นที่ 4: เริ่มฝึกในพื้นที่ปลอดภัย (Safe Exposure)",
 
     },
     {
+        category: "mindset",
         lesson: "ขั้นที่ 5: ฝึกฟังอย่างตั้งใจ (Active Listening)",
 
     },
     {
+        category: "mindset",
         lesson: "ขั้นที่ 6: เข้าสถานการณ์จริง (Real-World Practice)",
 
     },
 ]
+

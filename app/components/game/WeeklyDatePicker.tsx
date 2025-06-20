@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface DatePickerProps {
   onDateSelect?: (date: Date) => void;
@@ -11,9 +11,13 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [weekDates, setWeekDates] = useState<Date[]>([]);
+  const todayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     generateWeekDates();
+     if (todayRef?.current) {
+            todayRef.current.scrollIntoView({ behavior: "smooth" });
+        }
   }, []);
 
   const generateWeekDates = () => {
@@ -57,7 +61,7 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <div className="">
-      <div className="flex  hidden-scrollbar element justify-start md:justify-between rounded-lg overflow-x-scroll  py-4 ">
+      <div className="flex gap-2 mx-auto pb-4 pt-2 hidden-scrollbar element justify-center md:justify-between rounded-lg overflow-x-scroll ">
         {weekDates.map((date, index) => {
           const isCurrentDay = isSelected(date);
           const isTodayDate = isToday(date);
@@ -66,15 +70,17 @@ const WeeklyDatePicker: React.FC<DatePickerProps> = ({
             <div
               key={index}
               onClick={() => handleDateClick(date)}
-              className={`flex group  rounded-lg transition-all duration-300 cursor-pointer justify-center w-20 relative ${
+              className={`flex group  rounded-lg transition-all duration-300 cursor-pointer justify-center md:w-20 w-16 relative ${
                 isCurrentDay
                   ? isDarkVariant
-                    ? 'bg-purple-600 shadow-lg '
-                    : 'bg-[--quinary-color-light] shadow-lg '
+                    ? 'bg-purple-600  '
+                    : 'bg-[--quinary-color-light]  '
                   : isDarkVariant
-                  ? 'hover:bg-purple-500 hover:shadow-lg '
-                  : 'hover:border-[--quinary-color-light] border-2 hover:shadow-lg bg-white'
+                  ? 'hover:bg-purple-500 hover: '
+                  : 'hover:border-[--quinary-color-light] border-2 hover: bg-white'
               }`}
+
+              ref={isTodayDate ? todayRef : null}
             >
             
               {isTodayDate && (

@@ -30,7 +30,14 @@ const BubblyButton: React.FC<BubblyButtonProps> = ({
             timeoutId = setTimeout(() => {
                 setIsAnimating(false);
             }, 1000); // ANIMATION_DURATION is 1000ms
+             const timer = setTimeout(() => {
+                const flipSound = new Audio("/sfx/start.mp3")
+                flipSound.play()
+        
+            }, 200)
         }
+
+        
         // Cleanup function for the timeout
         return () => {
             clearTimeout(timeoutId);
@@ -51,6 +58,8 @@ const BubblyButton: React.FC<BubblyButtonProps> = ({
     };
 
     return (
+        <>
+        
         <motion.button
             // Pass the ref to motion.button for direct DOM access if absolutely needed,
             // though for class toggling, state is often cleaner.
@@ -82,6 +91,7 @@ const BubblyButton: React.FC<BubblyButtonProps> = ({
         >
             {children}
         </motion.button>
+        </>
     );
 };
 

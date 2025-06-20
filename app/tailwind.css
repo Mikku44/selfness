@@ -16,38 +16,42 @@
   --primary-color-dark: rgb(233, 154, 17);
 
 
- /* Primary Color - Yellow/Orange */
---primary-color-dark: rgb(233, 154, 17);
---primary-color: rgb(255, 178, 44);
---primary-color-medium: rgb(255, 186, 65); /* added */
---primary-color-light: rgb(255, 195, 85);
+  /* Primary Color - Yellow/Orange */
+  --primary-color-dark: rgb(233, 154, 17);
+  --primary-color: rgb(255, 178, 44);
+  --primary-color-medium: rgb(255, 186, 65);
+  /* added */
+  --primary-color-light: rgb(255, 195, 85);
 
-/* Secondary Color - Blue/Purple */
---secondary-color-dark: #515cc6;
---secondary-color: #5a67d8;
---secondary-color-medium: #b9c0fe;
---secondary-color-light: #a8b1fe;
+  /* Secondary Color - Blue/Purple */
+  --secondary-color-dark: #515cc6;
+  --secondary-color: #5a67d8;
+  --secondary-color-medium: #b9c0fe;
+  --secondary-color-light: #a8b1fe;
 
-/* Tertiary Color - Red/Pink */
---tertiary-color-dark: #d42940;
---tertiary-color: #fe3a52;
---tertiary-color-medium: #ff5468; /* added */
---tertiary-color-light: #ff6b7a;
+  /* Tertiary Color - Red/Pink */
+  --tertiary-color-dark: #d42940;
+  --tertiary-color: #fe3a52;
+  --tertiary-color-medium: #ff5468;
+  /* added */
+  --tertiary-color-light: #ff6b7a;
 
-/* Quaternary Color - Light Blue */
---quaternary-color-dark: #2ba8e6;
---quaternary-color: #3cc5ff;
---quaternary-color-medium: #54d0ff; /* added */
---quaternary-color-light: #6dd4ff;
+  /* Quaternary Color - Light Blue */
+  --quaternary-color-dark: #2ba8e6;
+  --quaternary-color: #3cc5ff;
+  --quaternary-color-medium: #54d0ff;
+  /* added */
+  --quaternary-color-light: #6dd4ff;
 
-/* Quinary Color - Green */
---quinary-color-dark: rgb(27, 136, 91);
---quinary-color: #61DDAA;
---quinary-color-medium: #7de3bc; /* added */
---quinary-color-light: rgb(181, 247, 214);
+  /* Quinary Color - Green */
+  --quinary-color-dark: rgb(27, 136, 91);
+  --quinary-color: #61DDAA;
+  --quinary-color-medium: #7de3bc;
+  /* added */
+  --quinary-color-light: rgb(181, 247, 214);
 
 
---rotate3d : rotateX(34deg) translate3d(-33px, -19px, -4px);
+  --rotate3d: rotateX(34deg) translate3d(-33px, -19px, -4px);
 
 }
 
@@ -287,12 +291,16 @@ button:active .btn-question {
 
 
 .input {
+  --button_radius: 0.75em;
+  --button_outline_color: #000000;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 0.75em 1.5em;
+  /* background: var(--button_color); */
 
-  padding: 12px 0.875rem;
-  font-size: 1rem;
-  border: 2px solid #000;
-  margin-top: -8px;
-  border-radius: 0.5rem;
+  /* color: var(--button_outline_color); */
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
   box-shadow: 2.5px 3px 0 #000;
   outline: none;
   transition: ease 0.25s;

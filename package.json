@@ -33,7 +33,9 @@
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sonner": "^2.0.5"
+    "react-inlinesvg": "^4.2.0",
+    "sonner": "^2.0.5",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.16.7",

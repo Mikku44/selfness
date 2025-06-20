@@ -1,13 +1,15 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface ProgressBarProps {
-  progress: number; // Current progress value
+  progress: number;
+  visible?: boolean; // 👈 new prop to control visibility
   className?: string;
-  fillColor?: string; // Fill color
-  backgroundColor?: string; // Bar background
-  showPercentage?: boolean; // Show percent or raw number
-  showLabel?: boolean; // Show "ความคืบหน้า"
-  maxProgress?: number; // Custom max value
+  fillColor?: string;
+  backgroundColor?: string;
+  showPercentage?: boolean;
+  showLabel?: boolean;
+  maxProgress?: number;
   step?: {
     index: number;
     length: number;
@@ -16,6 +18,7 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   progress,
+  visible = true,
   className = '',
   fillColor = 'bg-[#5a67d8]',
   backgroundColor = 'bg-gray-200',
@@ -27,21 +30,24 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const isCustomMax = typeof maxProgress === 'number';
   const max = isCustomMax ? maxProgress : 100;
   const clampedProgress = Math.max(0, Math.min(progress, max));
-
   const widthPercent = (clampedProgress / max) * 100;
 
   return (
-    <div className={`w-full ${className}`}>
+    <motion.div
+      className={`w-full ${className}`}
+      // initial={{ opacity: 0, y: -30 }}
+      // animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      // transition={{ duration: 0.2 }}
+    >
       {/* Background bar */}
       <div className={`w-full h-4 ${backgroundColor} relative rounded-full overflow-hidden`}>
         {/* Fill bar */}
-        <div
-          className={`h-full ${fillColor} rounded-full absolute overflow-hidden transition-all duration-500 ease-out`}
-          style={{ width: `${widthPercent}%` }}
-        >
-          <div className={`progess-bar ${fillColor}`} ></div>
-        </div>
-
+        <motion.div
+          className={`h-full ${fillColor} rounded-full absolute transition-all duration-200 ease-out`}
+          initial={{ width: 0 }}
+          animate={{ width: `${widthPercent}%` }}
+          transition={{ duration: 1 }}
+        />
       </div>
 
       {/* Labels */}
@@ -59,7 +65,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

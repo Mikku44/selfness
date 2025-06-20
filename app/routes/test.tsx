@@ -1,19 +1,12 @@
-import BubblyButton from "~/components/BubbleButton";
+
+import CompleteScreen from "~/components/game/CompleteScreen";
 
 
 export default function test() {
     return (
-        <div style={{
-            overflow: 'hidden',
-            // background: 'rgb(20,20,20)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh'
-        }}>
-            <BubblyButton className="bg-none">
-                <div className="btn-primary">Click Me!</div>
-            </BubblyButton>
+        <div className="min-h-screen flex flex-col items-center">
+            <CompleteScreen />
+           
         </div>
     )
 }
