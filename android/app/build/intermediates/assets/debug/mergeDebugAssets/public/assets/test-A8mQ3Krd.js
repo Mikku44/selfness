@@ -1,0 +1,1 @@
+import{j as e}from"./index-7zqVQZSl.js";import{B as t}from"./BubbleButton-Com5kbg_.js";/* empty css               */function s(){return e.jsx("div",{style:{overflow:"hidden",display:"flex",justifyContent:"center",alignItems:"center",height:"100vh"},children:e.jsx(t,{className:"bg-none",children:e.jsx("div",{className:"btn-primary",children:"Click Me!"})})})}export{s as default};

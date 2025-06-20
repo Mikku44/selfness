@@ -1,0 +1,3 @@
+com.selfness.app.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme

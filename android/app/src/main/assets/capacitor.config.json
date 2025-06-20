@@ -1,0 +1,9 @@
+{
+	"appId": "com.selfness.app",
+	"appName": "Selfness",
+	"webDir": "build/client",
+	"server": {
+		"url": "http://selfness.khain.app",
+		"cleartext": true
+	}
+}
